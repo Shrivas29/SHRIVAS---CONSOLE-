@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { rotation } from "@/content/music";
 import { playSound } from "@/lib/sound";
@@ -18,19 +19,30 @@ export default function MusicWidget() {
   return (
     <div className="space-y-4">
       <div
-        className="relative grid aspect-square place-items-center border border-phosphor-dim"
+        className="relative grid aspect-square place-items-center overflow-hidden border border-phosphor-dim"
         style={{ background: track.bg }}
       >
-        {/* grain pass, echoing the SOS / TESTING cover language */}
+        {track.cover && (
+          <Image
+            src={track.cover.src}
+            alt={track.cover.alt}
+            fill
+            sizes="320px"
+            className="object-cover"
+          />
+        )}
+        {/* grain pass over everything — the SOS / ALLA texture language */}
         <svg aria-hidden="true" className="absolute inset-0 h-full w-full opacity-30 mix-blend-overlay">
           <filter id="grain">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" />
           </filter>
           <rect width="100%" height="100%" filter="url(#grain)" />
         </svg>
-        <span className="font-segment text-[clamp(3rem,10vw,5rem)]" style={{ color: track.fg }}>
-          {track.mark}
-        </span>
+        {!track.cover && (
+          <span className="font-segment text-[clamp(3rem,10vw,5rem)]" style={{ color: track.fg }}>
+            {track.mark}
+          </span>
+        )}
       </div>
       <div className="flex items-end justify-between gap-3">
         <div>
