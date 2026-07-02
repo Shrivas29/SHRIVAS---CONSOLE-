@@ -130,6 +130,39 @@ h3 {
   animation: boot-rise 0.35s var(--ease-mech) both;
 }
 
+/* CRT cursor blink — steps() so it snaps like hardware, no fade */
+@keyframes crt-blink {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  56%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* START pulse — phosphor breathing, slow and mechanical */
+@keyframes start-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 oklch(0.82 0.14 200 / 0.35);
+  }
+  50% {
+    box-shadow: 0 0 22px 2px oklch(0.82 0.14 200 / 0.18);
+  }
+}
+
+/* one slow scan sweep drifting down the tube */
+@keyframes scan-sweep {
+  from {
+    transform: translateY(-10%);
+  }
+  to {
+    transform: translateY(1200%);
+  }
+}
+
 /* ticker track — duplicated content scrolls half its width for a seamless loop */
 @keyframes ticker-scroll {
   from {
