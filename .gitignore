@@ -42,3 +42,4 @@ next-env.d.ts
 
 # raw reel footage, not a site asset
 IMG_7108*.MOV
+public/images/raw/
