@@ -11,13 +11,6 @@ const OUT = "public/images";
 //   .extract({ left: 30, top: 30, width: 790, height: 776 })
 //   .resize(640, 640, { fit: "cover" })
 //   .webp({ quality: 82 })
-//   .toFile(`${OUT}/cover-sloppyjoe.webp`);
-
-// SZA — SOS, already square-ish
-await sharp(`${RAW}/The 100 Best Album Covers of All Time.jpeg`)
-  .resize(640, 640, { fit: "cover" })
-  .webp({ quality: 82 })
-  .toFile(`${OUT}/cover-sos.webp`);
 
 // A$AP Rocky — B&W portrait, square crop on the face
 await sharp(`${RAW}/_ (4).jpeg`)

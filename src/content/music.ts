@@ -24,14 +24,6 @@ export const rotation: Track[] = [
     fg: "oklch(0.92 0.02 250)",
   },
   {
-    title: "Sloppy Joe",
-    artist: "slayr",
-    note: "chaos, hand-drawn",
-    mark: "SJ",
-    bg: "oklch(0.3 0.12 290)",
-    fg: "oklch(0.88 0.16 95)",
-  },
-  {
     title: "AT.LONG.LAST.A$AP",
     artist: "A$AP Rocky",
     note: "grain over everything",
