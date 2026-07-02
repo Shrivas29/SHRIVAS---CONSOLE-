@@ -3,13 +3,13 @@ export type Cable = { label: string; value: string; href: string };
 export const cables: Cable[] = [
   {
     label: "INSTAGRAM",
-    value: "@shrivasvm",
-    href: "https://instagram.com/shrivasvm",
+    value: "@shrivas_66",
+    href: "https://www.instagram.com/shrivas_66/",
   },
   {
     label: "LINKEDIN",
-    value: "in/shrivasvm",
-    href: "https://www.linkedin.com/in/shrivasvm",
+    value: "in/shrivas-vm",
+    href: "https://www.linkedin.com/in/shrivas-vm-612540250/",
   },
   {
     label: "MAIL",
