@@ -25,7 +25,7 @@ export default function StoryWidget() {
           alt={beat.img.alt}
           width={640}
           height={800}
-          className="max-h-56 w-full border border-phosphor-dim object-cover object-top"
+          className="max-h-64 w-full border border-phosphor-dim object-cover object-[center_32%]"
         />
       )}
       <button

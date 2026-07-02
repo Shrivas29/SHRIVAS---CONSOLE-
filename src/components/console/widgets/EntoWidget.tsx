@@ -11,7 +11,7 @@ export default function EntoWidget() {
         alt={ento.poster.alt}
         width={640}
         height={780}
-        className="max-h-64 w-full border border-phosphor-dim object-cover object-top"
+        className="max-h-64 w-full border border-phosphor-dim object-cover object-[center_28%]"
       />
       <p className="font-dot text-sm tracking-[0.2em] text-memo">{ento.tagline}</p>
       <p className="font-zen text-ink">{ento.body}</p>
