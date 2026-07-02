@@ -1,26 +1,118 @@
 @import "tailwindcss";
 
+/* Segment — the machine's display voice (user-provided, Fontshare/ITF) */
+@font-face {
+  font-family: "Segment";
+  src: url("/fonts/Segment-Regular.woff2") format("woff2"),
+    url("/fonts/Segment-Regular.woff") format("woff");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* surfaces */
+  --crt-black: oklch(0.13 0.012 210);
+  --crt-well: oklch(0.18 0.015 210);
+
+  /* phosphor system */
+  --phosphor: oklch(0.82 0.14 200);
+  --phosphor-dim: oklch(0.6 0.08 200);
+
+  /* ink */
+  --ink: oklch(0.96 0.01 200);
+  --ink-muted: oklch(0.72 0.02 210);
+
+  /* accents */
+  --alert: oklch(0.62 0.21 27);
+  --memo: oklch(0.88 0.16 95);
+
+  --font-segment: "Segment", "Courier New", monospace;
+  --font-dot: var(--font-dotgothic), "MS Gothic", monospace;
+  --font-zen: var(--font-zenkaku), "Hiragino Kaku Gothic ProN", sans-serif;
+
+  --ease-mech: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-crt-black: var(--crt-black);
+  --color-crt-well: var(--crt-well);
+  --color-phosphor: var(--phosphor);
+  --color-phosphor-dim: var(--phosphor-dim);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-alert: var(--alert);
+  --color-memo: var(--memo);
+  --font-segment: var(--font-segment);
+  --font-dot: var(--font-dot);
+  --font-zen: var(--font-zen);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--crt-black);
+  color: var(--ink);
+  font-family: var(--font-zen);
+  overflow-x: hidden;
+}
+
+.font-segment {
+  font-family: var(--font-segment);
+  letter-spacing: 0.04em;
+}
+
+.font-dot {
+  font-family: var(--font-dot);
+}
+
+.font-zen {
+  font-family: var(--font-zen);
+  line-height: 1.7;
+}
+
+/* In-fiction focus: pixel selection brackets */
+.focus-brackets:focus-visible {
+  outline: 2px solid var(--phosphor);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--phosphor);
+  color: var(--crt-black);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* ticker track — duplicated content scrolls half its width for a seamless loop */
+@keyframes ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* CRT flicker — opacity only, gentle, well under 3 flashes/s */
+@keyframes crt-flicker {
+  0%,
+  100% {
+    opacity: 0.06;
+  }
+  50% {
+    opacity: 0.08;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
