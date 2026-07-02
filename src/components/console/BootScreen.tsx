@@ -1,25 +1,21 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import { useOS } from "@/store/os";
 import { playSound } from "@/lib/sound";
-
-const row = {
-  hidden: { opacity: 0, y: 6 },
-  shown: { opacity: 1, y: 0 },
-};
 
 function ToggleRow({
   label,
   checked,
   onToggle,
+  delay,
 }: {
   label: string;
   checked: boolean;
   onToggle: () => void;
+  delay: string;
 }) {
   return (
-    <motion.div variants={row}>
+    <div className="boot-rise" style={{ animationDelay: delay }}>
       <button
         type="button"
         role="switch"
@@ -35,13 +31,12 @@ function ToggleRow({
           {checked ? "ON" : "OFF"}
         </span>
       </button>
-    </motion.div>
+    </div>
   );
 }
 
 export default function BootScreen() {
   const { config, toggleAudio, toggleCrt, start } = useOS();
-  const reduced = useReducedMotion();
 
   const handleStart = () => {
     playSound("boot", config.audio);
@@ -50,42 +45,41 @@ export default function BootScreen() {
 
   return (
     <main className="grid min-h-dvh place-items-center bg-crt-black p-4">
-      <motion.div
-        initial={reduced ? "shown" : "hidden"}
-        animate="shown"
-        variants={{
-          shown: { transition: { staggerChildren: 0.18, delayChildren: 0.2 } },
-        }}
-        className="w-full max-w-xl border-2 border-phosphor bg-black p-8 sm:p-12"
-      >
-        <motion.p
-          variants={row}
-          className="font-dot text-xs tracking-[0.35em] text-phosphor-dim"
+      <div className="w-full max-w-xl border-2 border-phosphor bg-black p-8 sm:p-12">
+        <p
+          className="boot-rise font-dot text-xs tracking-[0.35em] text-phosphor-dim"
+          style={{ animationDelay: "0.1s" }}
         >
           シュリヴァス-64 SYSTEM CONFIGURATION
-        </motion.p>
+        </p>
 
-        <motion.h1
-          variants={row}
-          className="font-segment mt-3 text-[clamp(2.2rem,7vw,4rem)] text-phosphor"
+        <h1
+          className="boot-rise font-segment mt-3 text-[clamp(2.2rem,7vw,4rem)] text-phosphor"
+          style={{ animationDelay: "0.25s" }}
         >
           SHRIVAS-64
-        </motion.h1>
+        </h1>
 
-        <motion.div variants={row} className="mt-8 space-y-px">
+        <div className="mt-8 space-y-px">
           <ToggleRow
             label="AUDIO"
             checked={config.audio}
+            delay="0.45s"
             onToggle={() => {
               toggleAudio();
               // preview blip only when switching ON
               playSound("click", !config.audio);
             }}
           />
-          <ToggleRow label="CRT MODE" checked={config.crt} onToggle={toggleCrt} />
-        </motion.div>
+          <ToggleRow
+            label="CRT MODE"
+            checked={config.crt}
+            delay="0.55s"
+            onToggle={toggleCrt}
+          />
+        </div>
 
-        <motion.div variants={row} className="mt-8">
+        <div className="boot-rise mt-8" style={{ animationDelay: "0.7s" }}>
           <button
             type="button"
             onClick={handleStart}
@@ -95,16 +89,16 @@ export default function BootScreen() {
           >
             START →
           </button>
-        </motion.div>
+        </div>
 
-        <motion.p
-          variants={row}
-          className="font-dot mt-6 text-right text-[11px] tracking-widest text-phosphor-dim"
+        <p
+          className="boot-rise font-dot mt-6 text-right text-[11px] tracking-widest text-phosphor-dim"
+          style={{ animationDelay: "0.85s" }}
           aria-hidden="true"
         >
           v6.4.0 · one owner · no resets
-        </motion.p>
-      </motion.div>
+        </p>
+      </div>
     </main>
   );
 }

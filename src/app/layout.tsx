@@ -1,18 +1,5 @@
 import type { Metadata } from "next";
-import { DotGothic16, Zen_Kaku_Gothic_New } from "next/font/google";
 import "./globals.css";
-
-const dotGothic = DotGothic16({
-  variable: "--font-dotgothic",
-  weight: "400",
-  subsets: ["latin"],
-});
-
-const zenKaku = Zen_Kaku_Gothic_New({
-  variable: "--font-zenkaku",
-  weight: ["400", "700"],
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://shrivas.dev"),
@@ -42,7 +29,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dotGothic.variable} ${zenKaku.variable} h-full antialiased`}
+      className="h-full antialiased"
     >
       <body className="min-h-full">{children}</body>
     </html>

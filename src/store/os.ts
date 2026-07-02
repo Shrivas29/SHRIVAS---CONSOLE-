@@ -91,6 +91,9 @@ export const useOS = create<OSState>()(
           : sessionStorage,
       ),
       partialize: (s) => ({ phase: s.phase, config: s.config }),
+      // SSR renders the boot phase; Console rehydrates after mount so the
+      // server and first client render always match.
+      skipHydration: true,
     },
   ),
 );

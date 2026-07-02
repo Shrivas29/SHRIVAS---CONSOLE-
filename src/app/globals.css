@@ -10,6 +10,32 @@
   font-style: normal;
 }
 
+/* DotGothic16 + Zen Kaku, subsetted to the exact glyphs this console uses
+   (~13KB each vs ~2MB of range files per JP family). scripts/subset-fonts.mjs */
+@font-face {
+  font-family: "DotGothic16";
+  src: url("/fonts/DotGothic16-subset.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zen Kaku Gothic New";
+  src: url("/fonts/ZenKaku-Regular-subset.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Zen Kaku Gothic New";
+  src: url("/fonts/ZenKaku-Bold-subset.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
+
 :root {
   /* surfaces */
   --crt-black: oklch(0.13 0.012 210);
@@ -28,8 +54,8 @@
   --memo: oklch(0.88 0.16 95);
 
   --font-segment: "Segment", "Courier New", monospace;
-  --font-dot: var(--font-dotgothic), "MS Gothic", monospace;
-  --font-zen: var(--font-zenkaku), "Hiragino Kaku Gothic ProN", sans-serif;
+  --font-dot: "DotGothic16", "MS Gothic", monospace;
+  --font-zen: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
 
   --ease-mech: cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -84,6 +110,24 @@ h1,
 h2,
 h3 {
   text-wrap: balance;
+}
+
+/* Boot reveal: phosphor warm-up. Rows start dim (never invisible — content
+   must paint even where animations pause: hidden tabs, headless renderers)
+   and rise to full glow on a stagger. */
+@keyframes boot-rise {
+  from {
+    opacity: 0.35;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.boot-rise {
+  animation: boot-rise 0.35s var(--ease-mech) both;
 }
 
 /* ticker track — duplicated content scrolls half its width for a seamless loop */
