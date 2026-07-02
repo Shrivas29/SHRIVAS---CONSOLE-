@@ -74,7 +74,9 @@ export default function Window({
           ✕
         </button>
       </header>
-      <div className="overflow-y-auto p-5 sm:p-6">{children}</div>
+      <div className={`overflow-y-auto p-5 sm:p-6 ${isMobile ? "pb-32" : ""}`}>
+        {children}
+      </div>
     </motion.section>
   );
 }
