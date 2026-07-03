@@ -10,6 +10,7 @@ import Taskbar from "./Taskbar";
 import Ticker from "./Ticker";
 import Screensaver from "./Screensaver";
 import CheatConsole from "./CheatConsole";
+import PlayerCam from "./PlayerCam";
 import StoryWidget from "./widgets/StoryWidget";
 import EntoWidget from "./widgets/EntoWidget";
 import MusicWidget from "./widgets/MusicWidget";
@@ -155,6 +156,7 @@ export default function Desktop() {
   const [noteIdx, setNoteIdx] = useState(0);
   const [shellOpen, setShellOpen] = useState(false);
   const [secretOpen, setSecretOpen] = useState(false);
+  const [camOpen, setCamOpen] = useState(false);
   const [poweringOff, setPoweringOff] = useState(false);
   const secretUnlocked = useOS((s) => s.secretUnlocked);
   const unlockSecret = useOS((s) => s.unlockSecret);
@@ -191,7 +193,8 @@ export default function Desktop() {
         return;
 
       if (e.key === "Escape") {
-        if (secretOpen) setSecretOpen(false);
+        if (camOpen) setCamOpen(false);
+        else if (secretOpen) setSecretOpen(false);
         else if (voidOpen) setVoidOpen(false);
         else if (topWindow) {
           playSound("close", audio);
@@ -222,7 +225,7 @@ export default function Desktop() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topWindow, voidOpen, secretOpen, shellOpen, audio]);
+  }, [topWindow, voidOpen, secretOpen, shellOpen, camOpen, audio]);
 
   return (
     <main
@@ -316,6 +319,31 @@ export default function Desktop() {
         ))
       )}
 
+      {/* PLAYER CAM — the console's eye, not a cartridge */}
+      <motion.button
+        type="button"
+        whileHover={{ y: -4 }}
+        whileTap={{ y: 2, scale: 0.98 }}
+        onClick={() => {
+          playSound("open", audio);
+          setCamOpen(true);
+        }}
+        className={`focus-brackets group cursor-pointer border-2 border-phosphor bg-black/70 p-3
+          text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
+          ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute left-[41%] top-[13%] z-10 w-40 rotate-[-1deg]"}`}
+      >
+        <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
+          <span className="text-alert motion-safe:animate-[crt-blink_1.4s_steps(1)_infinite]">
+            ●
+          </span>{" "}
+          LIVE
+        </span>
+        <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-phosphor group-hover:text-ink">
+          PLAYER CAM
+        </span>
+        <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-phosphor/40 group-hover:bg-phosphor" />
+      </motion.button>
+
       {/* secret cartridge — exists only after the Konami code */}
       {secretUnlocked && (
         <motion.button
@@ -385,6 +413,9 @@ export default function Desktop() {
             </div>
           </motion.div>
         )}
+        {/* PLAYER CAM feed */}
+        {camOpen && <PlayerCam key="cam" onClose={() => setCamOpen(false)} />}
+
         {/* CONFIDENTIAL quest log */}
         {secretOpen && (
           <motion.div
