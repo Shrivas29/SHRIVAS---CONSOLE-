@@ -1,6 +1,6 @@
 # Design
 
-SHRIVAS-64 — a fictional Japanese retro game console OS. The design register is a CRT machine from an alternate 1996, art-directed like a film and executed to the pixel.
+SHRIVAS PS — a fictional Japanese retro game console OS. The design register is a CRT machine from an alternate 1996, art-directed like a film and executed to the pixel.
 
 Mood in one phrase: **CRT phosphor at 1 a.m. in a messy teenage bedroom — bootleg Famicom energy, film grain, one machine that loves you back.**
 
@@ -41,7 +41,7 @@ Rules:
 Three voices on a hard contrast axis: **segment display / bitmap / smooth**.
 
 - **Segment** (Fontshare, self-hosted at `public/fonts/Segment-Regular.woff2`) — the machine's display voice. USER'S PICK; leads the identity. Hero/display type, clocks, stat readouts, tickers, big poster moments. It's a segmented-LED face: all-caps or numerals, display sizes only.
-- **DotGothic16** — the console's UI voice. Window titles, labels, boot text, buttons. Dot-matrix with real katakana/kanji for bilingual accents (シュリヴァス-64).
+- **DotGothic16** — the console's UI voice. Window titles, labels, boot text, buttons. Dot-matrix with real katakana/kanji for bilingual accents (シュリヴァスPS).
 - **Zen Kaku Gothic New** (400/700) — the human voice. Story prose inside windows, longer copy.
 
 Rules:

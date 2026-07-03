@@ -219,7 +219,7 @@ export default function Desktop() {
       {/* header plate */}
       <div className="pointer-events-none relative z-10 flex items-start justify-between p-4 sm:p-6">
         <div>
-          <h1 className="font-segment text-2xl text-phosphor sm:text-3xl">SHRIVAS-64</h1>
+          <h1 className="font-segment text-2xl text-phosphor sm:text-3xl">SHRIVAS PS</h1>
           <p className="font-dot mt-1 text-[11px] tracking-[0.3em] text-ink-muted">
             ホーム · HOME SCREEN
           </p>

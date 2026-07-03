@@ -95,7 +95,7 @@ export const useOS = create<OSState>()(
         }),
     }),
     {
-      name: "shrivas64-os",
+      name: "shrivas-ps-os",
       storage: createJSONStorage(() =>
         typeof window === "undefined"
           ? { getItem: () => null, setItem: () => {}, removeItem: () => {} }

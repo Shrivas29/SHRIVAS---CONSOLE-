@@ -12,7 +12,7 @@ Second audience: anyone who googles "Shrivas VM" — collaborators, university p
 
 ## Product Purpose
 
-A personal brand statement built as a playable machine: SHRIVAS-64, a fictional Japanese retro game console OS. The visitor boots it, lands on a living home screen (wallpaper: a messy room), and explores cartridge widgets that each hold a fragment of who Shrivas is — the story (Coimbatore → Netherlands, founder at ENTØ), what he builds, what he plays and listens to, how to reach him.
+A personal brand statement built as a playable machine: SHRIVAS PS, a fictional Japanese retro game console OS. The visitor boots it, lands on a living home screen (wallpaper: a messy room), and explores cartridge widgets that each hold a fragment of who Shrivas is — the story (Coimbatore → Netherlands, founder at ENTØ), what he builds, what he plays and listens to, how to reach him.
 
 Success: the visitor screenshots it, shares it, or says "how was this made?" It is not a resume. It proves craft by being craft.
 

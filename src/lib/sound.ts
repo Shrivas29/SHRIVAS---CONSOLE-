@@ -1,4 +1,4 @@
-// SHRIVAS-64 sound chip: synthesized square-wave blips, no audio files.
+// SHRIVAS PS sound chip: synthesized square-wave blips, no audio files.
 // Every call gates on `enabled` (the boot-config AUDIO toggle).
 
 export type SoundName = "boot" | "click" | "open" | "close";

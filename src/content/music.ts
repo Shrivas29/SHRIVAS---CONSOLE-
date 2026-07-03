@@ -61,7 +61,7 @@ export const rotation: Track[] = [
   },
   {
     title: "GHOSTS HOLD HANDS",
-    artist: "SHRIVAS-64 MIXTAPE 01",
+    artist: "SHRIVAS PS MIXTAPE 01",
     note: "for night walks",
     cover: {
       src: "/images/cover-glow.webp",

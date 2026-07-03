@@ -107,7 +107,7 @@ export default function BootScreen() {
           className="boot-rise font-dot text-xs tracking-[0.35em] text-phosphor-dim"
           style={{ animationDelay: "0.1s" }}
         >
-          シュリヴァス-64 SYSTEM CONFIGURATION
+          シュリヴァスPS SYSTEM CONFIGURATION
         </p>
 
         <h1
@@ -117,7 +117,7 @@ export default function BootScreen() {
             textShadow: "0 0 18px oklch(0.82 0.14 200 / 0.45)",
           }}
         >
-          SHRIVAS-64
+          SHRIVAS PS
           <span
             aria-hidden="true"
             className="ml-2 inline-block h-[0.75em] w-[0.45em] translate-y-[0.08em] bg-phosphor
