@@ -10,6 +10,7 @@ type OSState = {
   phase: Phase;
   config: { audio: boolean; crt: boolean };
   windows: Record<WidgetId, WindowState>;
+  played: Record<WidgetId, boolean>;
   zCounter: number;
   start: () => void;
   toggleAudio: () => void;
@@ -19,6 +20,7 @@ type OSState = {
   focusWindow: (id: WidgetId) => void;
   topWindow: () => WidgetId | null;
   openIds: () => WidgetId[];
+  playedCount: () => number;
   reset: () => void;
 };
 
@@ -34,12 +36,17 @@ const initialWindows = (): Record<WidgetId, WindowState> =>
   Object.fromEntries(WIDGET_IDS.map((id) => [id, { open: false, z: 0 }])) as
     Record<WidgetId, WindowState>;
 
+const initialPlayed = (): Record<WidgetId, boolean> =>
+  Object.fromEntries(WIDGET_IDS.map((id) => [id, false])) as
+    Record<WidgetId, boolean>;
+
 export const useOS = create<OSState>()(
   persist(
     (set, get) => ({
       phase: "boot",
       config: { audio: false, crt: true },
       windows: initialWindows(),
+      played: initialPlayed(),
       zCounter: 0,
 
       start: () => set({ phase: "desktop" }),
@@ -55,6 +62,7 @@ export const useOS = create<OSState>()(
             ...s.windows,
             [id]: { open: true, z: s.zCounter + 1 },
           },
+          played: { ...s.played, [id]: true },
         })),
 
       closeWindow: (id) =>
@@ -75,11 +83,14 @@ export const useOS = create<OSState>()(
           .filter(([, w]) => w.open)
           .map(([id]) => id),
 
+      playedCount: () => Object.values(get().played).filter(Boolean).length,
+
       reset: () =>
         set({
           phase: "boot",
           config: { audio: false, crt: true },
           windows: initialWindows(),
+          played: initialPlayed(),
           zCounter: 0,
         }),
     }),
@@ -90,7 +101,7 @@ export const useOS = create<OSState>()(
           ? { getItem: () => null, setItem: () => {}, removeItem: () => {} }
           : sessionStorage,
       ),
-      partialize: (s) => ({ phase: s.phase, config: s.config }),
+      partialize: (s) => ({ phase: s.phase, config: s.config, played: s.played }),
       // SSR renders the boot phase; Console rehydrates after mount so the
       // server and first client render always match.
       skipHydration: true,

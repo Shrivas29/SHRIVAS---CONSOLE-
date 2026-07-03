@@ -1,9 +1,16 @@
 "use client";
 
 import { headlines } from "@/content/ticker";
+import { useOS } from "@/store/os";
 
 export default function Ticker() {
-  const line = headlines.join("  ///  ");
+  const played = useOS((s) => s.played);
+  const complete = Object.values(played).every(Boolean);
+  const line = (
+    complete
+      ? ["VISITOR ACHIEVES 100% COMPLETION — THE CONSOLE APPROVES", ...headlines]
+      : headlines
+  ).join("  ///  ");
   return (
     <div
       aria-label="Breaking news ticker"

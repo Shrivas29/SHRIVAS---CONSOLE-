@@ -14,6 +14,7 @@ type WindowProps = {
   position: { left?: string; right?: string; top?: string; bottom?: string };
   width?: string;
   isMobile: boolean;
+  focused: boolean;
 };
 
 export default function Window({
@@ -24,6 +25,7 @@ export default function Window({
   position,
   width = "26rem",
   isMobile,
+  focused,
 }: WindowProps) {
   const z = useOS((s) => s.windows[id].z);
   const closeWindow = useOS((s) => s.closeWindow);
@@ -52,7 +54,8 @@ export default function Window({
       className={
         isMobile
           ? "fixed inset-0 flex flex-col bg-crt-well"
-          : "absolute flex max-h-[80dvh] flex-col border border-phosphor bg-crt-well shadow-[6px_6px_0_rgba(0,0,0,0.55)]"
+          : `absolute flex max-h-[80dvh] flex-col border bg-crt-well transition-opacity duration-150
+             ${focused ? "border-phosphor opacity-100 shadow-[6px_6px_0_rgba(0,0,0,0.55)]" : "border-phosphor-dim/60 opacity-85 shadow-[4px_4px_0_rgba(0,0,0,0.35)]"}`
       }
       style={isMobile ? { zIndex: 20 + z } : { ...position, width, zIndex: 20 + z }}
     >
@@ -60,7 +63,9 @@ export default function Window({
         className="flex min-h-11 shrink-0 cursor-grab items-center justify-between
           border-b border-phosphor bg-black/40 pl-4 active:cursor-grabbing"
       >
-        <h2 className="font-dot text-sm tracking-[0.25em] text-phosphor">
+        <h2
+          className={`font-dot text-sm tracking-[0.25em] ${focused || isMobile ? "text-phosphor" : "text-phosphor-dim"}`}
+        >
           {title}
         </h2>
         <button

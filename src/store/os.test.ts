@@ -70,3 +70,20 @@ describe("windows", () => {
     expect(s().openIds().sort()).toEqual(["music", "stats"]);
   });
 });
+
+describe("completion", () => {
+  it("marks widgets played on open, permanently", () => {
+    expect(s().playedCount()).toBe(0);
+    s().openWindow("story");
+    s().closeWindow("story");
+    expect(s().played.story).toBe(true);
+    expect(s().playedCount()).toBe(1);
+  });
+
+  it("counts each widget once", () => {
+    s().openWindow("story");
+    s().openWindow("story");
+    s().openWindow("ento");
+    expect(s().playedCount()).toBe(2);
+  });
+});
