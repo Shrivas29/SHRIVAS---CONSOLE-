@@ -81,6 +81,22 @@ body {
   overflow-x: hidden;
 }
 
+/* retro pixel cursors — phosphor arrow at rest, memo-yellow over anything
+   clickable (overrides Tailwind cursor utilities, hence !important) */
+html,
+body {
+  cursor: url("/cursors/arrow.png") 1 1, auto;
+}
+
+button,
+a,
+[role="button"],
+[role="switch"],
+.cursor-pointer,
+.cursor-grab {
+  cursor: url("/cursors/point.png") 1 1, pointer !important;
+}
+
 .font-segment {
   font-family: var(--font-segment);
   letter-spacing: 0.04em;
