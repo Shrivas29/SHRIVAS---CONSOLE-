@@ -79,7 +79,9 @@ export default function Window({
           ✕
         </button>
       </header>
-      <div className={`overflow-y-auto p-5 sm:p-6 ${isMobile ? "pb-32" : ""}`}>
+      <div
+        className={`min-h-0 flex-1 overflow-y-auto p-5 sm:p-6 ${isMobile ? "pb-32" : ""}`}
+      >
         {children}
       </div>
     </motion.section>
