@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { playSound } from "@/lib/sound";
 import { useOS } from "@/store/os";
+import { useAchievements } from "@/store/achievements";
 
 type CamState = "connecting" | "live" | "nosignal";
 
@@ -50,6 +51,7 @@ export default function PlayerCam({ onClose }: { onClose: () => void }) {
     const video = videoRef.current;
     if (!video || state !== "live") return;
     playSound("open", audio);
+    useAchievements.getState().unlock("caught-on-camera");
     setFlash(true);
     window.setTimeout(() => setFlash(false), 180);
 

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useOS, WIDGET_IDS, type WidgetId } from "@/store/os";
 import { playSound } from "@/lib/sound";
+import { useAchievements } from "@/store/achievements";
 
 type CheatConsoleProps = {
   onClose: () => void;
@@ -36,6 +37,7 @@ export default function CheatConsole({ onClose, onDegauss, onVoid }: CheatConsol
     if (!cmd) return;
     say(`> ${raw.trim()}`);
     playSound("click", config.audio);
+    useAchievements.getState().unlock("shell-hacker");
 
     if (cmd === "help") {
       say(

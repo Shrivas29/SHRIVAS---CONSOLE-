@@ -8,13 +8,14 @@ type WindowState = { open: boolean; z: number };
 
 type OSState = {
   phase: Phase;
-  config: { audio: boolean; crt: boolean };
+  config: { audio: boolean; crt: boolean; bgm: boolean };
   windows: Record<WidgetId, WindowState>;
   played: Record<WidgetId, boolean>;
   zCounter: number;
   start: () => void;
   toggleAudio: () => void;
   toggleCrt: () => void;
+  toggleBgm: () => void;
   openWindow: (id: WidgetId) => void;
   closeWindow: (id: WidgetId) => void;
   focusWindow: (id: WidgetId) => void;
@@ -48,7 +49,7 @@ export const useOS = create<OSState>()(
   persist(
     (set, get) => ({
       phase: "boot",
-      config: { audio: false, crt: true },
+      config: { audio: false, crt: true, bgm: false },
       windows: initialWindows(),
       played: initialPlayed(),
       zCounter: 0,
@@ -58,6 +59,8 @@ export const useOS = create<OSState>()(
         set((s) => ({ config: { ...s.config, audio: !s.config.audio } })),
       toggleCrt: () =>
         set((s) => ({ config: { ...s.config, crt: !s.config.crt } })),
+      toggleBgm: () =>
+        set((s) => ({ config: { ...s.config, bgm: !s.config.bgm } })),
 
       openWindow: (id) =>
         set((s) => ({
@@ -100,7 +103,7 @@ export const useOS = create<OSState>()(
       reset: () =>
         set({
           phase: "boot",
-          config: { audio: false, crt: true },
+          config: { audio: false, crt: true, bgm: false },
           windows: initialWindows(),
           played: initialPlayed(),
           secretUnlocked: false,

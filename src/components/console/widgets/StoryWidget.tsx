@@ -25,17 +25,20 @@ export default function StoryWidget() {
       return;
     }
     setChars(0);
-    const id = setInterval(
-      () =>
-        setChars((c) => {
-          if (c >= beat.line.length) {
-            clearInterval(id);
-            return c;
-          }
-          return c + 1;
-        }),
-      TYPE_MS,
-    );
+    let n = 0;
+    const id = setInterval(() => {
+      n += 1;
+      // soft key-tick every third letter, in the machine's voice
+      if (n % 3 === 0 && n < beat.line.length)
+        playSound("tick", useOS.getState().config.audio);
+      setChars((c) => {
+        if (c >= beat.line.length) {
+          clearInterval(id);
+          return c;
+        }
+        return c + 1;
+      });
+    }, TYPE_MS);
     return () => clearInterval(id);
   }, [i, beat.line, reduced]);
 

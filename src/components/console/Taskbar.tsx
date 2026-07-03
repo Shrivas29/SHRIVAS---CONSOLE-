@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useOS, type WidgetId } from "@/store/os";
+import { startBgm, stopBgm } from "@/lib/bgm";
 
 const TAB_LABELS: Record<WidgetId, string> = {
   story: "STORY",
@@ -18,7 +19,14 @@ export default function Taskbar({
   onClockTriple: () => void;
   onShutdown: () => void;
 }) {
-  const { config, toggleAudio, toggleCrt, focusWindow } = useOS();
+  const { config, toggleAudio, toggleCrt, toggleBgm, focusWindow } = useOS();
+
+  // the BGM engine follows the toggle; stops when the taskbar unmounts (shutdown)
+  useEffect(() => {
+    if (config.bgm) startBgm(true);
+    else stopBgm();
+    return () => stopBgm();
+  }, [config.bgm]);
   const windows = useOS((s) => s.windows);
   const played = useOS((s) => s.played);
   const openIds = (Object.keys(windows) as WidgetId[]).filter(
@@ -92,6 +100,17 @@ export default function Taskbar({
           text-phosphor transition-colors duration-150 hover:bg-phosphor/15"
       >
         {config.audio ? "♪ ON" : "♪ OFF"}
+      </button>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={config.bgm}
+        aria-label="Background music"
+        onClick={toggleBgm}
+        className="focus-brackets font-dot min-w-11 cursor-pointer border-l border-phosphor/30 px-3
+          text-xs tracking-widest text-phosphor transition-colors duration-150 hover:bg-phosphor/15"
+      >
+        {config.bgm ? "♫ ON" : "♫ OFF"}
       </button>
       <button
         type="button"

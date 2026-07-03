@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useOS } from "@/store/os";
 import { playSound } from "@/lib/sound";
+import { useAchievements } from "@/store/achievements";
 
 const BOOT_CHECKS = [
   ["MEM CHECK", "OK"],
@@ -65,6 +66,7 @@ export default function BootScreen() {
 
   const handleStart = () => {
     playSound("boot", config.audio);
+    useAchievements.getState().unlock("first-boot");
     start();
   };
 

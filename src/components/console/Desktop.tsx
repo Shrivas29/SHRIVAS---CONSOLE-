@@ -11,6 +11,7 @@ import Ticker from "./Ticker";
 import Screensaver from "./Screensaver";
 import CheatConsole from "./CheatConsole";
 import PlayerCam from "./PlayerCam";
+import { useAchievements } from "@/store/achievements";
 import StoryWidget from "./widgets/StoryWidget";
 import EntoWidget from "./widgets/EntoWidget";
 import MusicWidget from "./widgets/MusicWidget";
@@ -84,16 +85,19 @@ function CartridgeTile({
   isMobile,
   played,
   onOpen,
+  onHover,
 }: {
   cart: Cartridge;
   isMobile: boolean;
   played: boolean;
   onOpen: (id: WidgetId) => void;
+  onHover: () => void;
 }) {
   return (
     <motion.button
       type="button"
       onClick={() => onOpen(cart.id)}
+      onMouseEnter={onHover}
       whileHover={{ y: -4 }}
       whileTap={{ y: 2, scale: 0.98 }}
       transition={{ duration: 0.15, ease: [0.16, 1, 0.3, 1] }}
@@ -181,6 +185,15 @@ export default function Desktop() {
   const handleOpen = (id: WidgetId) => {
     playSound("open", audio);
     openWindow(id);
+    if (useOS.getState().playedCount() === WIDGET_IDS.length)
+      useAchievements.getState().unlock("all-cartridges");
+  };
+
+  const handleHover = () => playSound("hover", audio);
+
+  const openVoid = () => {
+    setVoidOpen(true);
+    useAchievements.getState().unlock("void-diver");
   };
 
   const openList = openEntries;
@@ -216,6 +229,7 @@ export default function Desktop() {
       if (buf.slice(-KONAMI.length).join(",") === KONAMI.join(",")) {
         runDegauss();
         unlockSecret();
+        useAchievements.getState().unlock("konami-kid");
         buf.length = 0;
       } else if (buf.slice(-4).join("") === "ento") {
         handleOpen("ento");
@@ -304,6 +318,7 @@ export default function Desktop() {
               isMobile
               played={played[c.id]}
               onOpen={handleOpen}
+              onHover={handleHover}
             />
           ))}
         </div>
@@ -315,6 +330,7 @@ export default function Desktop() {
             isMobile={false}
             played={played[c.id]}
             onOpen={handleOpen}
+            onHover={handleHover}
           />
         ))
       )}
@@ -324,6 +340,7 @@ export default function Desktop() {
         type="button"
         whileHover={{ y: -4 }}
         whileTap={{ y: 2, scale: 0.98 }}
+        onMouseEnter={handleHover}
         onClick={() => {
           playSound("open", audio);
           setCamOpen(true);
@@ -351,6 +368,7 @@ export default function Desktop() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           whileHover={{ y: -4 }}
+          onMouseEnter={handleHover}
           onClick={() => {
             playSound("open", audio);
             setSecretOpen(true);
@@ -484,12 +502,12 @@ export default function Desktop() {
         <CheatConsole
           onClose={() => setShellOpen(false)}
           onDegauss={runDegauss}
-          onVoid={() => setVoidOpen(true)}
+          onVoid={openVoid}
         />
       )}
       <Screensaver />
       <Ticker />
-      <Taskbar onClockTriple={() => setVoidOpen(true)} onShutdown={handleShutdown} />
+      <Taskbar onClockTriple={openVoid} onShutdown={handleShutdown} />
     </main>
   );
 }
