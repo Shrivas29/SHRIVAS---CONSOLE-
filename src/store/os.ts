@@ -8,6 +8,8 @@ type WindowState = { open: boolean; z: number };
 
 type OSState = {
   phase: Phase;
+  playerName: string;
+  setPlayerName: (name: string) => void;
   config: { audio: boolean; crt: boolean; bgm: boolean };
   windows: Record<WidgetId, WindowState>;
   played: Record<WidgetId, boolean>;
@@ -49,6 +51,9 @@ export const useOS = create<OSState>()(
   persist(
     (set, get) => ({
       phase: "boot",
+      playerName: "",
+      setPlayerName: (name) =>
+        set({ playerName: name.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 3) }),
       config: { audio: false, crt: true, bgm: false },
       windows: initialWindows(),
       played: initialPlayed(),
@@ -103,6 +108,7 @@ export const useOS = create<OSState>()(
       reset: () =>
         set({
           phase: "boot",
+          playerName: "",
           config: { audio: false, crt: true, bgm: false },
           windows: initialWindows(),
           played: initialPlayed(),
@@ -119,6 +125,7 @@ export const useOS = create<OSState>()(
       ),
       partialize: (s) => ({
         phase: s.phase,
+        playerName: s.playerName,
         config: s.config,
         played: s.played,
         secretUnlocked: s.secretUnlocked,

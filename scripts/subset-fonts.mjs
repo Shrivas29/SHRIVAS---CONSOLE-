@@ -6,7 +6,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import subsetFont from "subset-font";
 
 const ASCII = Array.from({ length: 95 }, (_, i) => String.fromCharCode(32 + i)).join("");
-const EXTRA = "·×Ø—…→↻∞⏭─█▪▼◑♪♫✕★●◉‹›⏻ァオカガクシジスタッテトホムュリンヴー’‘“”";
+const EXTRA = "·×Ø—…→↻∞⏭─█▪▼◑♪♫✕★●◉‹›⏻ァオカガクゲシジスタッテトホムムュリンヴー’‘“”";
 
 const jobs = [
   ["/tmp/DotGothic16-Regular.ttf", "public/fonts/DotGothic16-subset.woff2"],

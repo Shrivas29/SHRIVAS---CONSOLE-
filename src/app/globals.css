@@ -209,6 +209,16 @@ h3 {
   pointer-events: none;
 }
 
+/* staff roll — the long slow scroll every finished game has earned */
+@keyframes credits-scroll {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
 /* degauss — the CRT shudder when a magnet (or a Konami code) gets too close */
 @keyframes degauss {
   0% {

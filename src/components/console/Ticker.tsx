@@ -5,12 +5,14 @@ import { useOS } from "@/store/os";
 
 export default function Ticker() {
   const played = useOS((s) => s.played);
+  const playerName = useOS((s) => s.playerName);
   const complete = Object.values(played).every(Boolean);
-  const line = (
-    complete
-      ? ["VISITOR ACHIEVES 100% COMPLETION — THE CONSOLE APPROVES", ...headlines]
-      : headlines
-  ).join("  ///  ");
+  const items = [...headlines];
+  if (playerName)
+    items.unshift(`PLAYER ${playerName} REFUSES TO STOP CLICKING, WITNESSES SAY`);
+  if (complete)
+    items.unshift("VISITOR ACHIEVES 100% COMPLETION — THE CONSOLE APPROVES");
+  const line = items.join("  ///  ");
   return (
     <div
       aria-label="Breaking news ticker"

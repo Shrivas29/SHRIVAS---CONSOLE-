@@ -9,11 +9,12 @@ type CheatConsoleProps = {
   onClose: () => void;
   onDegauss: () => void;
   onVoid: () => void;
+  onCredits: () => void;
 };
 
 const OPENABLE = new Set<string>(WIDGET_IDS);
 
-export default function CheatConsole({ onClose, onDegauss, onVoid }: CheatConsoleProps) {
+export default function CheatConsole({ onClose, onDegauss, onVoid, onCredits }: CheatConsoleProps) {
   const [log, setLog] = useState<string[]>([
     "SHRIVAS PS SHELL — type HELP",
   ]);
@@ -42,7 +43,7 @@ export default function CheatConsole({ onClose, onDegauss, onVoid }: CheatConsol
     if (cmd === "help") {
       say(
         "COMMANDS: STORY · ENTO · MUSIC · STATS · CONTACT",
-        "ALSO: HIRE · EJECT · DEGAUSS · VOID · CLEAR · EXIT",
+        "ALSO: HIRE · EJECT · DEGAUSS · VOID · CREDITS · CLEAR · EXIT",
         "SOME COMMANDS ARE NOT LISTED. OBVIOUSLY.",
       );
     } else if (OPENABLE.has(cmd)) {
@@ -60,6 +61,9 @@ export default function CheatConsole({ onClose, onDegauss, onVoid }: CheatConsol
     } else if (cmd === "void") {
       onVoid();
       say("OPENING THE VOID. DON'T STAY LONG.");
+    } else if (cmd === "credits" || cmd === "staff roll") {
+      onCredits();
+      say("ROLLING STAFF. IT'S A SHORT LIST.");
     } else if (cmd === "clear") {
       setLog([]);
     } else if (cmd === "exit" || cmd === "quit") {

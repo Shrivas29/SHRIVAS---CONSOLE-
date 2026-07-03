@@ -3,6 +3,7 @@
 import { ACHIEVEMENTS, type AchievementId } from "@/store/achievements";
 
 type SaveData = {
+  playerName: string;
   playedCount: number;
   totalCartridges: number;
   unlocked: Partial<Record<AchievementId, boolean>>;
@@ -44,9 +45,13 @@ export async function exportSaveCard(data: SaveData): Promise<void> {
   ctx.font = '104px "Segment", monospace';
   ctx.fillText("SHRIVAS PS", 104, 310);
 
+  ctx.fillStyle = YELLOW;
+  ctx.font = '40px "DotGothic16", monospace';
+  ctx.fillText(`PLAYER ${data.playerName || "AAA"}`, 110, 372);
+
   // divider
   ctx.fillStyle = CYAN_DIM;
-  ctx.fillRect(110, 380, W - 220, 3);
+  ctx.fillRect(110, 400, W - 220, 3);
 
   // stats
   ctx.font = '34px "DotGothic16", monospace';

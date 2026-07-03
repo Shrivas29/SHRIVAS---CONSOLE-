@@ -71,6 +71,15 @@ describe("windows", () => {
   });
 });
 
+describe("player name", () => {
+  it("sanitizes to 3 uppercase chars", () => {
+    s().setPlayerName("shri vas");
+    expect(s().playerName).toBe("SHR");
+    s().setPlayerName("a!1");
+    expect(s().playerName).toBe("A1");
+  });
+});
+
 describe("secret + closeAll + power", () => {
   it("secret starts locked; unlockSecret flips it", () => {
     expect(s().secretUnlocked).toBe(false);

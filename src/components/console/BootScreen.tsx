@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useOS } from "@/store/os";
 import { playSound } from "@/lib/sound";
 import { useAchievements } from "@/store/achievements";
@@ -62,25 +62,111 @@ function ToggleRow({
 }
 
 export default function BootScreen() {
-  const { config, toggleAudio, toggleCrt, start } = useOS();
+  const { config, toggleAudio, toggleCrt, start, playerName, setPlayerName } =
+    useOS();
+  const [step, setStep] = useState<"config" | "name">("config");
+  const [draft, setDraft] = useState("");
+  const nameInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleStart = () => {
+    playSound("click", config.audio);
+    // returning players with a saved name boot straight in
+    if (playerName) {
+      finishBoot();
+      return;
+    }
+    setStep("name");
+  };
+
+  const finishBoot = (name?: string) => {
+    if (name !== undefined) setPlayerName(name || "AAA");
     playSound("boot", config.audio);
     useAchievements.getState().unlock("first-boot");
     start();
   };
 
+  useEffect(() => {
+    if (step === "name") nameInputRef.current?.focus();
+  }, [step]);
+
   // hardware hook: ENTER boots the console (ignore key events on the toggles)
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key !== "Enter") return;
-      if (e.target instanceof HTMLElement && e.target.closest("button")) return;
+      if (e.key !== "Enter" || step !== "config") return;
+      if (e.target instanceof HTMLElement && e.target.closest("button, input"))
+        return;
       handleStart();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [config.audio]);
+  }, [config.audio, step, playerName]);
+
+  if (step === "name") {
+    return (
+      <main className="grid min-h-dvh place-items-center bg-crt-black p-4">
+        <div
+          className="w-full max-w-xl border-2 border-phosphor bg-black p-8 sm:p-12"
+          style={{ boxShadow: "0 0 42px oklch(0.82 0.14 200 / 0.14)" }}
+        >
+          <p className="boot-rise font-dot text-xs tracking-[0.35em] text-phosphor-dim">
+            NEW PLAYER DETECTED
+          </p>
+          <h1
+            className="boot-rise font-segment mt-3 text-[clamp(1.6rem,5vw,2.6rem)] text-phosphor"
+            style={{ animationDelay: "0.15s" }}
+          >
+            ENTER INITIALS
+          </h1>
+          <div className="boot-rise mt-8" style={{ animationDelay: "0.3s" }}>
+            <input
+              ref={nameInputRef}
+              value={draft}
+              maxLength={3}
+              autoComplete="off"
+              spellCheck={false}
+              aria-label="Your initials, up to three characters"
+              onChange={(e) =>
+                setDraft(
+                  e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""),
+                )
+              }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") finishBoot(draft);
+              }}
+              className="focus-brackets font-segment w-full border border-phosphor bg-transparent
+                px-4 py-3 text-center text-4xl tracking-[0.6em] text-phosphor
+                caret-transparent outline-none"
+              placeholder="AAA"
+            />
+            <div className="mt-6 flex gap-px">
+              <button
+                type="button"
+                onClick={() => finishBoot(draft)}
+                className="focus-brackets font-dot min-h-12 flex-1 cursor-pointer border
+                  border-phosphor bg-phosphor/15 text-sm tracking-[0.3em] text-phosphor
+                  transition-colors duration-150 hover:bg-phosphor hover:text-crt-black"
+              >
+                CONFIRM →
+              </button>
+              <button
+                type="button"
+                onClick={() => finishBoot("")}
+                className="focus-brackets font-dot min-h-12 cursor-pointer border border-phosphor-dim
+                  px-5 text-xs tracking-[0.25em] text-phosphor-dim transition-colors
+                  duration-150 hover:border-phosphor hover:text-phosphor"
+              >
+                SKIP
+              </button>
+            </div>
+            <p className="font-dot mt-4 text-center text-[10px] tracking-[0.25em] text-phosphor-dim">
+              3 CHARACTERS. ARCADE RULES.
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-crt-black p-4">

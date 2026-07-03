@@ -7,7 +7,8 @@ export type AchievementId =
   | "void-diver"
   | "konami-kid"
   | "shell-hacker"
-  | "caught-on-camera";
+  | "caught-on-camera"
+  | "smash-master";
 
 export const ACHIEVEMENTS: Record<AchievementId, string> = {
   "first-boot": "FIRST BOOT",
@@ -16,6 +17,7 @@ export const ACHIEVEMENTS: Record<AchievementId, string> = {
   "konami-kid": "KONAMI KID",
   "shell-hacker": "SHELL HACKER",
   "caught-on-camera": "CAUGHT ON CAMERA",
+  "smash-master": "SMASH MASTER",
 };
 
 type AchievementsState = {

@@ -8,6 +8,7 @@ import { playSound } from "@/lib/sound";
 
 export default function StatsWidget() {
   const played = useOS((s) => s.played);
+  const playerName = useOS((s) => s.playerName);
   const audio = useOS((s) => s.config.audio);
   const unlocked = useAchievements((s) => s.unlocked);
   const playedCount = Object.values(played).filter(Boolean).length;
@@ -15,6 +16,7 @@ export default function StatsWidget() {
   const share = () => {
     playSound("open", audio);
     void exportSaveCard({
+      playerName,
       playedCount,
       totalCartridges: WIDGET_IDS.length,
       unlocked,

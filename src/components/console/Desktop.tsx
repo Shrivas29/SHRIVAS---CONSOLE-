@@ -11,6 +11,8 @@ import Ticker from "./Ticker";
 import Screensaver from "./Screensaver";
 import CheatConsole from "./CheatConsole";
 import PlayerCam from "./PlayerCam";
+import CreditsRoll from "./CreditsRoll";
+import BadmintonGame from "./BadmintonGame";
 import { useAchievements } from "@/store/achievements";
 import StoryWidget from "./widgets/StoryWidget";
 import EntoWidget from "./widgets/EntoWidget";
@@ -161,8 +163,11 @@ export default function Desktop() {
   const [shellOpen, setShellOpen] = useState(false);
   const [secretOpen, setSecretOpen] = useState(false);
   const [camOpen, setCamOpen] = useState(false);
+  const [gameOpen, setGameOpen] = useState(false);
+  const [creditsOpen, setCreditsOpen] = useState(false);
   const [poweringOff, setPoweringOff] = useState(false);
   const secretUnlocked = useOS((s) => s.secretUnlocked);
+  const playerName = useOS((s) => s.playerName);
   const unlockSecret = useOS((s) => s.unlockSecret);
   const playedCount = Object.values(played).filter(Boolean).length;
 
@@ -206,7 +211,9 @@ export default function Desktop() {
         return;
 
       if (e.key === "Escape") {
-        if (camOpen) setCamOpen(false);
+        if (creditsOpen) setCreditsOpen(false);
+        else if (gameOpen) setGameOpen(false);
+        else if (camOpen) setCamOpen(false);
         else if (secretOpen) setSecretOpen(false);
         else if (voidOpen) setVoidOpen(false);
         else if (topWindow) {
@@ -239,7 +246,7 @@ export default function Desktop() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topWindow, voidOpen, secretOpen, shellOpen, camOpen, audio]);
+  }, [topWindow, voidOpen, secretOpen, shellOpen, camOpen, gameOpen, creditsOpen, audio]);
 
   return (
     <main
@@ -279,12 +286,12 @@ export default function Desktop() {
               >
                 ▶
               </span>
-              PLAYER 1 CONNECTED — OPEN A CARTRIDGE
+              {playerName ? `PLAYER ${playerName} — OPEN A CARTRIDGE` : "PLAYER 1 CONNECTED — OPEN A CARTRIDGE"}
             </p>
           )}
         </div>
         <p className="font-dot hidden text-right text-[11px] leading-relaxed tracking-[0.2em] text-ink-muted sm:block">
-          1 PLAYER CONNECTED
+          PLAYER {playerName || "1"} CONNECTED
           <br />
           COIMBATORE, IN
         </p>
@@ -361,6 +368,29 @@ export default function Desktop() {
         <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-phosphor/40 group-hover:bg-phosphor" />
       </motion.button>
 
+      {/* BADMINTON.EXE — an actual game inside the machine */}
+      <motion.button
+        type="button"
+        whileHover={{ y: -4 }}
+        whileTap={{ y: 2, scale: 0.98 }}
+        onMouseEnter={handleHover}
+        onClick={() => {
+          playSound("open", audio);
+          setGameOpen(true);
+        }}
+        className={`focus-brackets group cursor-pointer border-2 border-memo bg-black/70 p-3
+          text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
+          ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute right-[30%] bottom-[14%] z-10 w-44 rotate-[2deg]"}`}
+      >
+        <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
+          ゲーム · GAME
+        </span>
+        <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-memo group-hover:text-ink">
+          BADMINTON.EXE
+        </span>
+        <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-memo/50 group-hover:bg-memo" />
+      </motion.button>
+
       {/* secret cartridge — exists only after the Konami code */}
       {secretUnlocked && (
         <motion.button
@@ -434,6 +464,16 @@ export default function Desktop() {
         {/* PLAYER CAM feed */}
         {camOpen && <PlayerCam key="cam" onClose={() => setCamOpen(false)} />}
 
+        {/* BADMINTON.EXE */}
+        {gameOpen && (
+          <BadmintonGame key="game" onClose={() => setGameOpen(false)} />
+        )}
+
+        {/* STAFF ROLL */}
+        {creditsOpen && (
+          <CreditsRoll key="credits" onClose={() => setCreditsOpen(false)} />
+        )}
+
         {/* CONFIDENTIAL quest log */}
         {secretOpen && (
           <motion.div
@@ -503,6 +543,7 @@ export default function Desktop() {
           onClose={() => setShellOpen(false)}
           onDegauss={runDegauss}
           onVoid={openVoid}
+          onCredits={() => setCreditsOpen(true)}
         />
       )}
       <Screensaver />
