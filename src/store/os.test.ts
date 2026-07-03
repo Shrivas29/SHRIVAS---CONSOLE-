@@ -71,6 +71,30 @@ describe("windows", () => {
   });
 });
 
+describe("secret + closeAll + power", () => {
+  it("secret starts locked; unlockSecret flips it", () => {
+    expect(s().secretUnlocked).toBe(false);
+    s().unlockSecret();
+    expect(s().secretUnlocked).toBe(true);
+  });
+
+  it("closeAllWindows closes everything", () => {
+    s().openWindow("story");
+    s().openWindow("music");
+    s().closeAllWindows();
+    expect(s().openIds()).toEqual([]);
+  });
+
+  it("powerOff returns to boot but keeps progress", () => {
+    s().start();
+    s().openWindow("story");
+    s().powerOff();
+    expect(s().phase).toBe("boot");
+    expect(s().played.story).toBe(true);
+    expect(s().openIds()).toEqual([]);
+  });
+});
+
 describe("completion", () => {
   it("marks widgets played on open, permanently", () => {
     expect(s().playedCount()).toBe(0);

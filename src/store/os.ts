@@ -21,6 +21,10 @@ type OSState = {
   topWindow: () => WidgetId | null;
   openIds: () => WidgetId[];
   playedCount: () => number;
+  secretUnlocked: boolean;
+  unlockSecret: () => void;
+  closeAllWindows: () => void;
+  powerOff: () => void;
   reset: () => void;
 };
 
@@ -85,12 +89,21 @@ export const useOS = create<OSState>()(
 
       playedCount: () => Object.values(get().played).filter(Boolean).length,
 
+      secretUnlocked: false,
+      unlockSecret: () => set({ secretUnlocked: true }),
+
+      closeAllWindows: () => set({ windows: initialWindows() }),
+
+      // back to the config screen; progress and settings survive
+      powerOff: () => set({ phase: "boot", windows: initialWindows() }),
+
       reset: () =>
         set({
           phase: "boot",
           config: { audio: false, crt: true },
           windows: initialWindows(),
           played: initialPlayed(),
+          secretUnlocked: false,
           zCounter: 0,
         }),
     }),
@@ -101,7 +114,12 @@ export const useOS = create<OSState>()(
           ? { getItem: () => null, setItem: () => {}, removeItem: () => {} }
           : sessionStorage,
       ),
-      partialize: (s) => ({ phase: s.phase, config: s.config, played: s.played }),
+      partialize: (s) => ({
+        phase: s.phase,
+        config: s.config,
+        played: s.played,
+        secretUnlocked: s.secretUnlocked,
+      }),
       // SSR renders the boot phase; Console rehydrates after mount so the
       // server and first client render always match.
       skipHydration: true,

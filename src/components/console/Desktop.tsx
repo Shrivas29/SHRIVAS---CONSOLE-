@@ -8,6 +8,8 @@ import { useMediaQuery } from "@/lib/useMediaQuery";
 import Window from "./Window";
 import Taskbar from "./Taskbar";
 import Ticker from "./Ticker";
+import Screensaver from "./Screensaver";
+import CheatConsole from "./CheatConsole";
 import StoryWidget from "./widgets/StoryWidget";
 import EntoWidget from "./widgets/EntoWidget";
 import MusicWidget from "./widgets/MusicWidget";
@@ -126,6 +128,7 @@ const STICKY_NOTES = [
   "the clock has a secret.",
   "↑ ↑ ↓ ↓ ← → ← → B A",
   "just type: e n t o",
+  "press / and ask for HELP",
 ];
 
 const KONAMI = [
@@ -150,7 +153,28 @@ export default function Desktop() {
   const [voidOpen, setVoidOpen] = useState(false);
   const [degauss, setDegauss] = useState(false);
   const [noteIdx, setNoteIdx] = useState(0);
+  const [shellOpen, setShellOpen] = useState(false);
+  const [secretOpen, setSecretOpen] = useState(false);
+  const [poweringOff, setPoweringOff] = useState(false);
+  const secretUnlocked = useOS((s) => s.secretUnlocked);
+  const unlockSecret = useOS((s) => s.unlockSecret);
   const playedCount = Object.values(played).filter(Boolean).length;
+
+  const runDegauss = () => {
+    setDegauss(true);
+    playSound("boot", audio);
+    window.setTimeout(() => setDegauss(false), 750);
+  };
+
+  const handleShutdown = () => {
+    if (poweringOff) return;
+    playSound("close", audio);
+    setPoweringOff(true);
+    window.setTimeout(() => {
+      useOS.getState().powerOff();
+      setPoweringOff(false);
+    }, 850);
+  };
 
   const handleOpen = (id: WidgetId) => {
     playSound("open", audio);
@@ -167,11 +191,18 @@ export default function Desktop() {
         return;
 
       if (e.key === "Escape") {
-        if (voidOpen) setVoidOpen(false);
+        if (secretOpen) setSecretOpen(false);
+        else if (voidOpen) setVoidOpen(false);
         else if (topWindow) {
           playSound("close", audio);
           closeWindow(topWindow);
         }
+        return;
+      }
+
+      if (e.key === "/" && !shellOpen) {
+        e.preventDefault();
+        setShellOpen(true);
         return;
       }
 
@@ -180,9 +211,8 @@ export default function Desktop() {
       if (buf.length > 10) buf.shift();
 
       if (buf.slice(-KONAMI.length).join(",") === KONAMI.join(",")) {
-        setDegauss(true);
-        playSound("boot", audio);
-        window.setTimeout(() => setDegauss(false), 750);
+        runDegauss();
+        unlockSecret();
         buf.length = 0;
       } else if (buf.slice(-4).join("") === "ento") {
         handleOpen("ento");
@@ -192,13 +222,14 @@ export default function Desktop() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topWindow, voidOpen, audio]);
+  }, [topWindow, voidOpen, secretOpen, shellOpen, audio]);
 
   return (
     <main
       ref={desktopRef}
       data-testid="desktop"
-      className={`relative min-h-dvh overflow-hidden bg-crt-black ${degauss ? "degauss" : ""}`}
+      className={`relative min-h-dvh overflow-hidden bg-crt-black
+        ${degauss ? "degauss" : ""} ${poweringOff ? "crt-off" : ""}`}
     >
       {/* wallpaper */}
       <div
@@ -285,6 +316,31 @@ export default function Desktop() {
         ))
       )}
 
+      {/* secret cartridge — exists only after the Konami code */}
+      {secretUnlocked && (
+        <motion.button
+          type="button"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          whileHover={{ y: -4 }}
+          onClick={() => {
+            playSound("open", audio);
+            setSecretOpen(true);
+          }}
+          className={`focus-brackets group cursor-pointer border-2 border-alert bg-black/80
+            p-3 text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)]
+            ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute left-[44%] top-[64%] z-10 w-44 rotate-[1.5deg]"}`}
+        >
+          <span className="font-dot block text-[10px] tracking-[0.3em] text-alert">
+            ??? · カートリッジ
+          </span>
+          <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-alert group-hover:text-ink">
+            CONFIDENTIAL
+          </span>
+          <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-alert/60" />
+        </motion.button>
+      )}
+
       {/* windows */}
       <AnimatePresence>
         {openList.map((id) => {
@@ -329,14 +385,80 @@ export default function Desktop() {
             </div>
           </motion.div>
         )}
+        {/* CONFIDENTIAL quest log */}
+        {secretOpen && (
+          <motion.div
+            key="secret"
+            role="dialog"
+            aria-label="Confidential quest log"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[46] grid place-items-center bg-black/90 p-4"
+            onClick={() => setSecretOpen(false)}
+          >
+            <div
+              className="w-full max-w-md border-2 border-alert bg-black p-6 sm:p-8"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="font-dot text-xs tracking-[0.35em] text-alert">
+                CONFIDENTIAL · DO NOT LEAK
+              </p>
+              <p className="font-segment mt-2 text-2xl text-ink">QUEST LOG</p>
+              <ul className="font-zen mt-5 space-y-4 text-sm text-ink">
+                <li>
+                  <span className="font-dot text-xs tracking-[0.25em] text-alert">
+                    ACTIVE QUEST
+                  </span>
+                  <br />
+                  Undergrad — the Netherlands. New map unlocks soon. The console
+                  ships in the carry-on.
+                </li>
+                <li>
+                  <span className="font-dot text-xs tracking-[0.25em] text-alert">
+                    SIDE QUEST
+                  </span>
+                  <br />
+                  Grow ENTØ from one founder into a name people say without
+                  being asked.
+                </li>
+                <li>
+                  <span className="font-dot text-xs tracking-[0.25em] text-alert">
+                    HIDDEN STAT
+                  </span>
+                  <br />
+                  You found this screen. Email me the word DEGAUSS and I&apos;ll
+                  know exactly what kind of person I&apos;m talking to.
+                </li>
+              </ul>
+              <button
+                type="button"
+                onClick={() => setSecretOpen(false)}
+                className="focus-brackets font-dot mt-6 min-h-11 w-full cursor-pointer border
+                  border-alert text-xs tracking-[0.3em] text-alert transition-colors
+                  duration-150 hover:bg-alert hover:text-ink"
+              >
+                SEAL IT BACK
+              </button>
+            </div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       <span className="sr-only" aria-live="polite">
         {topWindow ? `${topWindow} window focused` : "no windows open"}
       </span>
 
+      {shellOpen && (
+        <CheatConsole
+          onClose={() => setShellOpen(false)}
+          onDegauss={runDegauss}
+          onVoid={() => setVoidOpen(true)}
+        />
+      )}
+      <Screensaver />
       <Ticker />
-      <Taskbar onClockTriple={() => setVoidOpen(true)} />
+      <Taskbar onClockTriple={() => setVoidOpen(true)} onShutdown={handleShutdown} />
     </main>
   );
 }

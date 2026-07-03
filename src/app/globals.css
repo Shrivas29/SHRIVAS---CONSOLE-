@@ -179,6 +179,36 @@ h3 {
   }
 }
 
+/* power-off — the tube collapses to a bright line, then dies */
+@keyframes crt-off {
+  0% {
+    transform: scaleY(1) scaleX(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  55% {
+    transform: scaleY(0.006) scaleX(1.08);
+    filter: brightness(4);
+    opacity: 1;
+  }
+  80% {
+    transform: scaleY(0.006) scaleX(0.04);
+    filter: brightness(6);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.006) scaleX(0);
+    filter: brightness(6);
+    opacity: 0;
+  }
+}
+
+.crt-off {
+  animation: crt-off 0.8s cubic-bezier(0.7, 0, 0.9, 1) forwards;
+  transform-origin: center;
+  pointer-events: none;
+}
+
 /* degauss — the CRT shudder when a magnet (or a Konami code) gets too close */
 @keyframes degauss {
   0% {

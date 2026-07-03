@@ -11,7 +11,13 @@ const TAB_LABELS: Record<WidgetId, string> = {
   contact: "LINK",
 };
 
-export default function Taskbar({ onClockTriple }: { onClockTriple: () => void }) {
+export default function Taskbar({
+  onClockTriple,
+  onShutdown,
+}: {
+  onClockTriple: () => void;
+  onShutdown: () => void;
+}) {
   const { config, toggleAudio, toggleCrt, focusWindow } = useOS();
   const windows = useOS((s) => s.windows);
   const played = useOS((s) => s.played);
@@ -106,6 +112,15 @@ export default function Taskbar({ onClockTriple }: { onClockTriple: () => void }
           px-4 text-xl text-phosphor"
       >
         {time}
+      </button>
+      <button
+        type="button"
+        aria-label="Shut down"
+        onClick={onShutdown}
+        className="focus-brackets min-w-11 cursor-pointer border-l border-phosphor/30 px-3
+          text-base text-phosphor transition-colors duration-150 hover:bg-alert hover:text-ink"
+      >
+        ⏻
       </button>
     </footer>
   );
