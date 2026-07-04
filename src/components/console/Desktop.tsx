@@ -315,107 +315,117 @@ export default function Desktop() {
         <span className="font-bold">{STICKY_NOTES[noteIdx]}</span>
       </button>
 
-      {/* cartridges */}
-      {isMobile ? (
-        <div className="relative z-10 grid grid-cols-2 gap-3 p-4 pb-32">
-          {CARTRIDGES.map((c) => (
-            <CartridgeTile
-              key={c.id}
-              cart={c}
-              isMobile
-              played={played[c.id]}
-              onOpen={handleOpen}
-              onHover={handleHover}
-            />
-          ))}
-        </div>
-      ) : (
-        CARTRIDGES.map((c) => (
+      {/* special tiles share the cartridge grid on mobile, float free on desktop */}
+      {(() => {
+        const tilePos = (desktop: string) =>
+          isMobile ? "min-h-20 w-full" : `absolute z-10 ${desktop}`;
+
+        const camTile = (
+          <motion.button
+            key="cam-tile"
+            type="button"
+            whileHover={{ y: -4 }}
+            whileTap={{ y: 2, scale: 0.98 }}
+            onMouseEnter={handleHover}
+            onClick={() => {
+              playSound("open", audio);
+              setCamOpen(true);
+            }}
+            className={`focus-brackets group cursor-pointer border-2 border-phosphor bg-black/70 p-3
+              text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
+              ${tilePos("left-[41%] top-[13%] w-40 rotate-[-1deg]")}`}
+          >
+            <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
+              <span className="text-alert motion-safe:animate-[crt-blink_1.4s_steps(1)_infinite]">
+                ●
+              </span>{" "}
+              LIVE
+            </span>
+            <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-phosphor group-hover:text-ink">
+              PLAYER CAM
+            </span>
+            <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-phosphor/40 group-hover:bg-phosphor" />
+          </motion.button>
+        );
+
+        const gameTile = (
+          <motion.button
+            key="game-tile"
+            type="button"
+            whileHover={{ y: -4 }}
+            whileTap={{ y: 2, scale: 0.98 }}
+            onMouseEnter={handleHover}
+            onClick={() => {
+              playSound("open", audio);
+              setGameOpen(true);
+            }}
+            className={`focus-brackets group cursor-pointer border-2 border-memo bg-black/70 p-3
+              text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
+              ${tilePos("right-[30%] bottom-[14%] w-44 rotate-[2deg]")}`}
+          >
+            <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
+              ゲーム · GAME
+            </span>
+            <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-memo group-hover:text-ink">
+              BADMINTON.EXE
+            </span>
+            <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-memo/50 group-hover:bg-memo" />
+          </motion.button>
+        );
+
+        const secretTile = secretUnlocked && (
+          <motion.button
+            key="secret-tile"
+            type="button"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            whileHover={{ y: -4 }}
+            onMouseEnter={handleHover}
+            onClick={() => {
+              playSound("open", audio);
+              setSecretOpen(true);
+            }}
+            className={`focus-brackets group cursor-pointer border-2 border-alert bg-black/80
+              p-3 text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)]
+              ${tilePos("left-[44%] top-[64%] w-44 rotate-[1.5deg]")}`}
+          >
+            <span className="font-dot block text-[10px] tracking-[0.3em] text-alert">
+              ??? · カートリッジ
+            </span>
+            <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-alert group-hover:text-ink">
+              CONFIDENTIAL
+            </span>
+            <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-alert/60" />
+          </motion.button>
+        );
+
+        const cartridgeTiles = CARTRIDGES.map((c) => (
           <CartridgeTile
             key={c.id}
             cart={c}
-            isMobile={false}
+            isMobile={isMobile}
             played={played[c.id]}
             onOpen={handleOpen}
             onHover={handleHover}
           />
-        ))
-      )}
+        ));
 
-      {/* PLAYER CAM — the console's eye, not a cartridge */}
-      <motion.button
-        type="button"
-        whileHover={{ y: -4 }}
-        whileTap={{ y: 2, scale: 0.98 }}
-        onMouseEnter={handleHover}
-        onClick={() => {
-          playSound("open", audio);
-          setCamOpen(true);
-        }}
-        className={`focus-brackets group cursor-pointer border-2 border-phosphor bg-black/70 p-3
-          text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
-          ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute left-[41%] top-[13%] z-10 w-40 rotate-[-1deg]"}`}
-      >
-        <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
-          <span className="text-alert motion-safe:animate-[crt-blink_1.4s_steps(1)_infinite]">
-            ●
-          </span>{" "}
-          LIVE
-        </span>
-        <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-phosphor group-hover:text-ink">
-          PLAYER CAM
-        </span>
-        <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-phosphor/40 group-hover:bg-phosphor" />
-      </motion.button>
-
-      {/* BADMINTON.EXE — an actual game inside the machine */}
-      <motion.button
-        type="button"
-        whileHover={{ y: -4 }}
-        whileTap={{ y: 2, scale: 0.98 }}
-        onMouseEnter={handleHover}
-        onClick={() => {
-          playSound("open", audio);
-          setGameOpen(true);
-        }}
-        className={`focus-brackets group cursor-pointer border-2 border-memo bg-black/70 p-3
-          text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)] backdrop-blur-[1px]
-          ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute right-[30%] bottom-[14%] z-10 w-44 rotate-[2deg]"}`}
-      >
-        <span className="font-dot block text-[10px] tracking-[0.3em] text-phosphor-dim">
-          ゲーム · GAME
-        </span>
-        <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-memo group-hover:text-ink">
-          BADMINTON.EXE
-        </span>
-        <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-memo/50 group-hover:bg-memo" />
-      </motion.button>
-
-      {/* secret cartridge — exists only after the Konami code */}
-      {secretUnlocked && (
-        <motion.button
-          type="button"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          whileHover={{ y: -4 }}
-          onMouseEnter={handleHover}
-          onClick={() => {
-            playSound("open", audio);
-            setSecretOpen(true);
-          }}
-          className={`focus-brackets group cursor-pointer border-2 border-alert bg-black/80
-            p-3 text-left shadow-[4px_4px_0_rgba(0,0,0,0.6)]
-            ${isMobile ? "relative z-10 mx-4 mb-3 block w-48" : "absolute left-[44%] top-[64%] z-10 w-44 rotate-[1.5deg]"}`}
-        >
-          <span className="font-dot block text-[10px] tracking-[0.3em] text-alert">
-            ??? · カートリッジ
-          </span>
-          <span className="font-dot mt-1 block text-sm tracking-[0.2em] text-alert group-hover:text-ink">
-            CONFIDENTIAL
-          </span>
-          <span aria-hidden="true" className="mt-2 block h-1.5 w-8 bg-alert/60" />
-        </motion.button>
-      )}
+        return isMobile ? (
+          <div className="relative z-10 grid grid-cols-2 gap-3 p-4 pb-36">
+            {cartridgeTiles}
+            {gameTile}
+            {camTile}
+            {secretTile}
+          </div>
+        ) : (
+          <>
+            {cartridgeTiles}
+            {camTile}
+            {gameTile}
+            {secretTile}
+          </>
+        );
+      })()}
 
       {/* windows */}
       <AnimatePresence>
