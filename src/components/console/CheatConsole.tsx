@@ -72,8 +72,18 @@ export default function CheatConsole({ onClose, onDegauss, onVoid, onCredits }: 
       say("NICE TRY. THIS MACHINE HAS ONE OWNER.");
     } else if (cmd === "konami") {
       say("UP UP DOWN DOWN… YOU KNOW THE REST. ON THE DESKTOP, NOT HERE.");
-    } else if (cmd === "shrivas") {
-      say("THAT'S THE WHOLE CONSOLE. TRY STORY.");
+    } else if (cmd === "shrivas" || cmd === "who") {
+      say("SHRIVAS VM. FOUNDER · DESIGNER · DEVELOPER.", "THE MACHINE'S ONE OWNER. TRY STORY.");
+    } else if (cmd === "why") {
+      say("BECAUSE A PDF RESUME CAN'T DO THIS.");
+    } else if (cmd === "mom") {
+      say("FIRST CLIENT. TOUGHEST STAKEHOLDER.", "RATED THE WORK FIVE STARS. CITED BIAS.");
+    } else if (cmd === "coffee") {
+      say("FILTER COFFEE. STRONG ENOUGH TO REBOOT A CORPSE.", "SUPPLY STATUS: CRITICAL, AS ALWAYS.");
+    } else if (cmd === "naruto" || cmd === "itachi") {
+      say("THE ITACHI FIGURINE SUPERVISES ALL DEPLOYMENTS.", "NO SHIP HAS FAILED UNDER HIS WATCH.");
+    } else if (cmd === "netherlands" || cmd === "nl") {
+      say("NEXT MAP: UNDERGRAD QUEST.", "THE CONSOLE SHIPS IN A CARRY-ON.");
     } else {
       say(`UNKNOWN CARTRIDGE: "${cmd.toUpperCase()}". TYPE HELP.`);
     }

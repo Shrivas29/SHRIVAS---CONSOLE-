@@ -523,6 +523,22 @@ export default function Desktop() {
                 </li>
                 <li>
                   <span className="font-dot text-xs tracking-[0.25em] text-alert">
+                    COMPLETED
+                  </span>
+                  <br />
+                  Built this entire console in two late-night sessions with an
+                  AI copilot. The copilot is polite. It wrote this line.
+                </li>
+                <li>
+                  <span className="font-dot text-xs tracking-[0.25em] text-alert">
+                    DAILY GRIND
+                  </span>
+                  <br />
+                  Badminton before school. Streak: intact. The shuttle in
+                  BADMINTON.EXE floats like the real thing on purpose.
+                </li>
+                <li>
+                  <span className="font-dot text-xs tracking-[0.25em] text-alert">
                     HIDDEN STAT
                   </span>
                   <br />

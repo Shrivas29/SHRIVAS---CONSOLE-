@@ -1,6 +1,6 @@
 "use client";
 
-import { headlines } from "@/content/ticker";
+import { headlines, timeHeadline } from "@/content/ticker";
 import { useOS } from "@/store/os";
 
 export default function Ticker() {
@@ -8,6 +8,8 @@ export default function Ticker() {
   const playerName = useOS((s) => s.playerName);
   const complete = Object.values(played).every(Boolean);
   const items = [...headlines];
+  const timed = timeHeadline(new Date().getHours());
+  if (timed) items.splice(2, 0, timed);
   if (playerName)
     items.unshift(`PLAYER ${playerName} REFUSES TO STOP CLICKING, WITNESSES SAY`);
   if (complete)

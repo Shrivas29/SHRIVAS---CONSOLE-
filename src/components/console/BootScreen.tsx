@@ -11,6 +11,15 @@ const BOOT_CHECKS = [
   ["CARTRIDGES", "5 DETECTED"],
 ] as const;
 
+// one rotating hardware check per boot (client-only; SSR shows the core three)
+const BONUS_CHECKS: [string, string][] = [
+  ["COFFEE LEVELS", "ADEQUATE"],
+  ["MOM APPROVAL", "5/5"],
+  ["SHUTTLECOCKS", "LOADED"],
+  ["ITACHI", "WATCHING"],
+  ["TEMPLATES", "0 FOUND"],
+];
+
 function ToggleRow({
   label,
   hint,
@@ -66,6 +75,7 @@ export default function BootScreen() {
     useOS();
   const [step, setStep] = useState<"config" | "name">("config");
   const [draft, setDraft] = useState("");
+  const [bonusCheck, setBonusCheck] = useState<[string, string] | null>(null);
   const nameInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleStart = () => {
@@ -88,6 +98,10 @@ export default function BootScreen() {
   useEffect(() => {
     if (step === "name") nameInputRef.current?.focus();
   }, [step]);
+
+  useEffect(() => {
+    setBonusCheck(BONUS_CHECKS[Math.floor(Math.random() * BONUS_CHECKS.length)]);
+  }, []);
 
   // hardware hook: ENTER boots the console (ignore key events on the toggles)
   useEffect(() => {
@@ -215,16 +229,18 @@ export default function BootScreen() {
 
         {/* boot checks — the machine proving it has something inside */}
         <ul className="font-dot mt-5 space-y-1 text-[11px] tracking-[0.25em]">
-          {BOOT_CHECKS.map(([label, result], i) => (
-            <li
-              key={label}
-              className="boot-rise flex justify-between text-phosphor-dim"
-              style={{ animationDelay: `${0.4 + i * 0.12}s` }}
-            >
-              <span>{label}</span>
-              <span className="text-phosphor">{result}</span>
-            </li>
-          ))}
+          {[...BOOT_CHECKS, ...(bonusCheck ? [bonusCheck] : [])].map(
+            ([label, result], i) => (
+              <li
+                key={label}
+                className="boot-rise flex justify-between text-phosphor-dim"
+                style={{ animationDelay: `${0.4 + i * 0.12}s` }}
+              >
+                <span>{label}</span>
+                <span className="text-phosphor">{result}</span>
+              </li>
+            ),
+          )}
         </ul>
 
         <div className="mt-7 space-y-px">

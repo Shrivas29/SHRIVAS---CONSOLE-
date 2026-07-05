@@ -15,6 +15,16 @@ export default function EntoWidget() {
       />
       <p className="font-dot text-sm tracking-[0.2em] text-memo">{ento.tagline}</p>
       <p className="font-zen text-ink">{ento.body}</p>
+      <p className="font-dot border-y border-phosphor-dim/40 py-2 text-center text-xs tracking-[0.25em] text-phosphor">
+        {ento.services}
+      </p>
+      <p className="font-zen text-sm text-ink-muted">{ento.foundingStat}</p>
+      {ento.accepting && (
+        <p className="font-dot text-xs tracking-[0.25em] text-memo">
+          <span className="motion-safe:animate-[crt-blink_1.4s_steps(1)_infinite]">●</span>{" "}
+          ACCEPTING QUESTS: YES
+        </p>
+      )}
       <a
         href={ento.url}
         target="_blank"

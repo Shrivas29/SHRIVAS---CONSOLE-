@@ -6,7 +6,7 @@ export default function ContactWidget() {
   return (
     <div className="space-y-4">
       <p className="font-zen text-ink">
-        Four cables out of this machine. Plug into any of them.
+        Four cables out of this machine. Client work goes down the STUDIO cable; everything else, MAIL.
       </p>
       <ul className="space-y-px">
         {cables.map((c) => (

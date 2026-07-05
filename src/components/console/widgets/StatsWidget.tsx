@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { character } from "@/content/stats";
 import { exportSaveCard } from "@/lib/shareCard";
 import { useAchievements } from "@/store/achievements";
@@ -12,6 +13,24 @@ export default function StatsWidget() {
   const audio = useOS((s) => s.config.audio);
   const unlocked = useAchievements((s) => s.unlocked);
   const playedCount = Object.values(played).filter(Boolean).length;
+  const [badmintonBest, setBadmintonBest] = useState(0);
+  const [playtime, setPlaytime] = useState("00:00");
+
+  useEffect(() => {
+    setBadmintonBest(Number(localStorage.getItem("shrivas-ps-badminton-best") || 0));
+    const KEY = "shrivas-ps-session-start";
+    if (!sessionStorage.getItem(KEY)) sessionStorage.setItem(KEY, String(Date.now()));
+    const started = Number(sessionStorage.getItem(KEY));
+    const tick = () => {
+      const secs = Math.floor((Date.now() - started) / 1000);
+      const mm = String(Math.floor(secs / 60)).padStart(2, "0");
+      const ss = String(secs % 60).padStart(2, "0");
+      setPlaytime(`${mm}:${ss}`);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   const share = () => {
     playSound("open", audio);
@@ -53,6 +72,19 @@ export default function StatsWidget() {
             <li key={item}>▪ {item}</li>
           ))}
         </ul>
+      </div>
+
+      <div className="flex items-center justify-between border-t border-phosphor-dim/40 pt-3">
+        <p className="font-dot text-xs tracking-[0.2em] text-ink-muted">
+          BADMINTON BEST
+        </p>
+        <p className="font-segment text-xl text-phosphor">{badmintonBest}</p>
+      </div>
+      <div className="-mt-3 flex items-center justify-between">
+        <p className="font-dot text-xs tracking-[0.2em] text-ink-muted">
+          YOUR PLAYTIME
+        </p>
+        <p className="font-segment text-xl text-phosphor">{playtime}</p>
       </div>
 
       <p className="font-dot border-t border-phosphor-dim/40 pt-3 text-xs tracking-[0.2em] text-ink-muted">
