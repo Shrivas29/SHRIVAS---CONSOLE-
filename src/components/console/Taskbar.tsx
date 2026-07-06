@@ -64,8 +64,8 @@ export default function Taskbar({
 
   return (
     <footer
-      className="fixed bottom-[var(--bezel)] left-[var(--bezel)] right-[var(--bezel)] z-30 flex
-        min-h-12 items-stretch border-t border-phosphor bg-black/80 backdrop-blur-[2px]"
+      className="fixed inset-x-0 bottom-0 z-30 flex min-h-12 items-stretch
+        border-t border-phosphor bg-black/80 backdrop-blur-[2px]"
     >
       <div className="flex flex-1 items-stretch gap-px overflow-x-auto">
         {openIds.map((id) => (

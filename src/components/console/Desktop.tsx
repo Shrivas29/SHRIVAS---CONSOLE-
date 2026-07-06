@@ -252,7 +252,7 @@ export default function Desktop() {
     <main
       ref={desktopRef}
       data-testid="desktop"
-      className={`relative min-h-dvh overflow-hidden bg-crt-black
+      className={`relative h-full overflow-hidden bg-crt-black
         ${degauss ? "degauss" : ""} ${poweringOff ? "crt-off" : ""}`}
     >
       {/* wallpaper */}
@@ -273,8 +273,7 @@ export default function Desktop() {
 
       {/* header plate — inset inside the console bezel */}
       <div
-        className="pointer-events-none relative z-10 flex items-start justify-between
-          p-[calc(1rem+var(--bezel))] sm:p-[calc(1.5rem+var(--bezel))]"
+        className="pointer-events-none relative z-10 flex items-start justify-between p-4 sm:p-6"
       >
         <div>
           <h1 className="font-segment text-2xl text-phosphor sm:text-3xl">SHRIVAS PS</h1>

@@ -59,8 +59,13 @@
 
   --ease-mech: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* physical console shell thickness — thin on phones, chunky on desktop */
-  --bezel: clamp(12px, 3.4vw, 54px);
+  /* the beige computer + clay desk it sits on */
+  --clay: #b56a5a;
+  --clay-lo: #a85f50;
+  --beige: #ded6c4;
+  --beige-hi: #ece6d7;
+  --beige-lo: #c3baa4;
+  --beige-deep: #ab9f86;
 }
 
 @theme inline {
@@ -78,10 +83,121 @@
 }
 
 body {
-  background: var(--crt-black);
+  background: var(--clay);
   color: var(--ink);
   font-family: var(--font-zen);
-  overflow-x: hidden;
+  overflow: hidden;
+}
+
+/* ── The beige computer on a clay desk ─────────────────────────────
+   The whole SHRIVAS PS site plays inside this CRT. The desk fills the
+   viewport; the monitor is centred with a warm clay gutter; the screen
+   holds the app and contains its fixed overlays via `transform`. */
+.desk {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(120% 80% at 50% 8%, #c07d6c 0%, var(--clay) 42%, var(--clay-lo) 100%);
+}
+
+.monitor {
+  position: relative;
+  width: min(94vw, 168vh);
+  height: min(94dvh, 1180px);
+  display: flex;
+  flex-direction: column;
+  padding: clamp(12px, 2.4vw, 40px);
+  padding-bottom: 0;
+  border-radius: clamp(18px, 2.4vw, 42px);
+  background: linear-gradient(
+    166deg,
+    var(--beige-hi) 0%,
+    var(--beige) 30%,
+    var(--beige-lo) 82%,
+    var(--beige-deep) 100%
+  );
+  box-shadow:
+    /* molded highlight up top, shade down low */
+    inset 0 3px 2px rgba(255, 255, 255, 0.55),
+    inset 0 -5px 8px rgba(0, 0, 0, 0.18),
+    /* it sits on a desk */
+    0 30px 60px -20px rgba(60, 20, 12, 0.55),
+    0 8px 20px -8px rgba(60, 20, 12, 0.4);
+}
+
+/* the CRT glass: rounded pincushion corners, recessed into the plastic.
+   `transform` makes it the containing block for the app's fixed overlays. */
+.monitor-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: clamp(14px, 1.8vw, 30px);
+  background: var(--crt-black);
+  transform: translateZ(0);
+  box-shadow:
+    /* deep inner bezel groove around the glass */
+    0 0 0 3px var(--beige-deep),
+    0 0 0 5px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 2px rgba(0, 0, 0, 0.7),
+    inset 0 0 40px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* the chin below the screen: vent grooves, brand, power LED */
+.monitor-chin {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: clamp(26px, 4vw, 62px);
+  padding: 0 clamp(10px, 2vw, 28px);
+}
+
+.monitor-vents {
+  flex: 1;
+  height: 42%;
+  margin-left: 1rem;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.16) 0 1px,
+    transparent 1px 4px
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.monitor-brand {
+  font-size: clamp(9px, 1.2vw, 16px);
+  letter-spacing: 0.42em;
+  color: #8a7f66;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+}
+
+.monitor-led {
+  width: clamp(6px, 0.8vw, 9px);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: #e0503c;
+  box-shadow:
+    0 0 7px 1px rgba(224, 80, 60, 0.9),
+    inset 0 1px 1px rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 640px) {
+  /* on phones the device nearly fills the screen; drop the chin for room */
+  .monitor {
+    width: 96vw;
+    height: 96dvh;
+    padding: clamp(8px, 3vw, 16px);
+    padding-bottom: clamp(8px, 3vw, 16px);
+  }
+  .monitor-chin {
+    display: none;
+  }
 }
 
 /* retro pixel cursors — phosphor arrow at rest, memo-yellow over anything
@@ -252,83 +368,6 @@ h3 {
 
 .degauss {
   animation: degauss 0.7s ease-out 1;
-}
-
-/* physical console shell: a dark molded-plastic frame around the whole screen.
-   The plastic is a gradient ring (mask trick) so it reads as one curved
-   surface lit from above; ::after sinks the screen into it. Overlay only. */
-.bezel-frame {
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  border: var(--bezel) solid transparent;
-  border-radius: clamp(22px, 2.6vw, 40px);
-  /* graphite plastic, top-lit: pale ridge up top → deep shade at the base */
-  background: linear-gradient(
-      168deg,
-      #4a463f 0%,
-      #322f2a 15%,
-      #232019 48%,
-      #17140f 82%,
-      #0c0a08 100%
-    )
-    border-box;
-  /* show only the border ring; the screen (padding box) stays transparent */
-  -webkit-mask:
-    linear-gradient(#000 0 0) padding-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-
-/* the screen well: crisp black lip + a top-lit edge + inner vignette so the
-   glass reads as recessed into the plastic. Separate layer so it isn't masked. */
-.bezel-well {
-  position: fixed;
-  inset: var(--bezel);
-  z-index: 60;
-  pointer-events: none;
-  border-radius: clamp(10px, 1.6vw, 24px);
-  box-shadow:
-    0 0 0 2px rgba(0, 0, 0, 0.92),
-    0 3px 1px 2px rgba(255, 255, 255, 0.06),
-    inset 0 0 34px 10px rgba(0, 0, 0, 0.55);
-}
-
-/* engraved wordmark on the bottom lip */
-.bezel-logo {
-  position: absolute;
-  bottom: calc((var(--bezel) - 1em) / 2);
-  left: 0;
-  right: 0;
-  text-align: center;
-  font-size: clamp(9px, 1.3vw, 18px);
-  letter-spacing: 0.5em;
-  color: #14120f;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-/* power label + LED in the bottom-right of the shell */
-.bezel-power {
-  position: absolute;
-  bottom: calc((var(--bezel) - 1em) / 2);
-  right: calc(var(--bezel) * 1.15);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: clamp(7px, 0.9vw, 11px);
-  letter-spacing: 0.3em;
-  color: #4a473f;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
-}
-
-.bezel-led {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--phosphor);
-  box-shadow: 0 0 7px 1px oklch(0.82 0.14 200 / 0.9);
 }
 
 /* ticker track — duplicated content scrolls half its width for a seamless loop */
