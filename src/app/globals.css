@@ -254,39 +254,27 @@ h3 {
   animation: degauss 0.7s ease-out 1;
 }
 
-/* physical console shell: a warm-plastic bezel framing the whole screen,
-   like the AWGE TV. Decorative overlay — never intercepts pointer events. */
+/* physical console shell: a dark molded-plastic frame around the whole screen.
+   The plastic is a gradient ring (mask trick) so it reads as one curved
+   surface lit from above; ::after sinks the screen into it. Overlay only. */
 .bezel-frame {
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  border: var(--bezel) solid #a99d84;
-  border-radius: clamp(16px, 2vw, 30px);
-  box-shadow:
-    /* dark inner lip where plastic meets glass */
-    inset 0 0 0 2px rgba(0, 0, 0, 0.6),
-    inset 0 0 26px 5px rgba(0, 0, 0, 0.5),
-    /* top-lit bevel: highlight up top, shadow at bottom */
-    inset 0 3px 2px rgba(255, 255, 255, 0.22),
-    inset 0 -4px 6px rgba(0, 0, 0, 0.32);
-}
-
-/* plastic sheen: lighter at the top edge, darker at the bottom */
-.bezel-frame::before {
-  content: "";
-  position: absolute;
-  inset: calc(var(--bezel) * -1);
   border: var(--bezel) solid transparent;
-  border-radius: inherit;
+  border-radius: clamp(22px, 2.6vw, 40px);
+  /* graphite plastic, top-lit: pale ridge up top → deep shade at the base */
   background: linear-gradient(
-      160deg,
-      rgba(255, 255, 255, 0.16),
-      transparent 30%,
-      transparent 70%,
-      rgba(0, 0, 0, 0.28)
+      168deg,
+      #4a463f 0%,
+      #322f2a 15%,
+      #232019 48%,
+      #17140f 82%,
+      #0c0a08 100%
     )
     border-box;
+  /* show only the border ring; the screen (padding box) stays transparent */
   -webkit-mask:
     linear-gradient(#000 0 0) padding-box,
     linear-gradient(#000 0 0);
@@ -294,31 +282,53 @@ h3 {
   mask-composite: exclude;
 }
 
-/* embossed wordmark on the bottom lip */
+/* the screen well: crisp black lip + a top-lit edge + inner vignette so the
+   glass reads as recessed into the plastic. Separate layer so it isn't masked. */
+.bezel-well {
+  position: fixed;
+  inset: var(--bezel);
+  z-index: 60;
+  pointer-events: none;
+  border-radius: clamp(10px, 1.6vw, 24px);
+  box-shadow:
+    0 0 0 2px rgba(0, 0, 0, 0.92),
+    0 3px 1px 2px rgba(255, 255, 255, 0.06),
+    inset 0 0 34px 10px rgba(0, 0, 0, 0.55);
+}
+
+/* engraved wordmark on the bottom lip */
 .bezel-logo {
   position: absolute;
-  bottom: calc((var(--bezel) - 0.9em) / 2);
+  bottom: calc((var(--bezel) - 1em) / 2);
   left: 0;
   right: 0;
   text-align: center;
-  font-size: clamp(9px, 1.4vw, 20px);
-  letter-spacing: 0.4em;
-  color: #7f7660;
-  text-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.28),
-    0 -1px 1px rgba(0, 0, 0, 0.35);
+  font-size: clamp(9px, 1.3vw, 18px);
+  letter-spacing: 0.5em;
+  color: #14120f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
-/* power LED in the bottom-right of the shell */
-.bezel-led {
+/* power label + LED in the bottom-right of the shell */
+.bezel-power {
   position: absolute;
-  bottom: calc(var(--bezel) / 2 - 3px);
-  right: calc(var(--bezel) * 1.4);
+  bottom: calc((var(--bezel) - 1em) / 2);
+  right: calc(var(--bezel) * 1.15);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(7px, 0.9vw, 11px);
+  letter-spacing: 0.3em;
+  color: #4a473f;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.bezel-led {
   width: 6px;
   height: 6px;
   border-radius: 999px;
   background: var(--phosphor);
-  box-shadow: 0 0 6px 1px oklch(0.82 0.14 200 / 0.8);
+  box-shadow: 0 0 7px 1px oklch(0.82 0.14 200 / 0.9);
 }
 
 /* ticker track — duplicated content scrolls half its width for a seamless loop */

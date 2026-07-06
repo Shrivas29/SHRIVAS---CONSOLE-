@@ -4,9 +4,14 @@
 // whole viewport (AWGE TV energy). Pure decoration; pointer-events: none.
 export default function BezelFrame() {
   return (
-    <div aria-hidden="true" className="bezel-frame">
-      <span className="bezel-logo font-segment hidden sm:block">SHRIVAS PS</span>
-      <span className="bezel-led" />
-    </div>
+    <>
+      <div aria-hidden="true" className="bezel-well" />
+      <div aria-hidden="true" className="bezel-frame">
+        <span className="bezel-logo font-segment hidden sm:block">SHRIVAS PS</span>
+        <span className="bezel-power font-dot hidden sm:flex">
+          PWR <span className="bezel-led" />
+        </span>
+      </div>
+    </>
   );
 }
