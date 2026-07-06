@@ -8,6 +8,7 @@ import { useOS } from "@/store/os";
 import { useAchievements } from "@/store/achievements";
 import { prefetchAssets } from "@/lib/prefetchAssets";
 import AchievementToast from "./AchievementToast";
+import BezelFrame from "./BezelFrame";
 
 export default function Console() {
   const phase = useOS((s) => s.phase);
@@ -26,6 +27,7 @@ export default function Console() {
       {phase === "boot" ? <BootScreen /> : <Desktop />}
       <AchievementToast />
       {crt && <CrtOverlay />}
+      <BezelFrame />
     </>
   );
 }

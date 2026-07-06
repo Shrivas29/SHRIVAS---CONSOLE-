@@ -25,7 +25,7 @@ export default function AchievementToast() {
   return (
     <div
       aria-live="polite"
-      className="pointer-events-none fixed right-4 top-4 z-[47]"
+      className="pointer-events-none fixed right-[calc(1rem+var(--bezel))] top-[calc(1rem+var(--bezel))] z-[47]"
     >
       <AnimatePresence>
         {current && (

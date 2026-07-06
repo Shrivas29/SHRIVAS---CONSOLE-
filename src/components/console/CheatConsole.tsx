@@ -93,7 +93,8 @@ export default function CheatConsole({ onClose, onDegauss, onVoid, onCredits }: 
     <div
       role="dialog"
       aria-label="System shell"
-      className="fixed inset-x-0 bottom-[5.75rem] z-[35] border-t-2 border-phosphor bg-black/95"
+      className="fixed left-[var(--bezel)] right-[var(--bezel)] bottom-[calc(5.75rem+var(--bezel))] z-[35]
+        border-t-2 border-phosphor bg-black/95"
     >
       <div ref={logRef} className="max-h-40 overflow-y-auto px-4 pt-3">
         {log.map((line, idx) => (

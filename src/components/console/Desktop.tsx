@@ -271,8 +271,11 @@ export default function Desktop() {
         <rect width="100%" height="100%" filter="url(#desk-grain)" />
       </svg>
 
-      {/* header plate */}
-      <div className="pointer-events-none relative z-10 flex items-start justify-between p-4 sm:p-6">
+      {/* header plate — inset inside the console bezel */}
+      <div
+        className="pointer-events-none relative z-10 flex items-start justify-between
+          p-[calc(1rem+var(--bezel))] sm:p-[calc(1.5rem+var(--bezel))]"
+      >
         <div>
           <h1 className="font-segment text-2xl text-phosphor sm:text-3xl">SHRIVAS PS</h1>
           <p className="font-dot mt-1 text-[11px] tracking-[0.3em] text-ink-muted">

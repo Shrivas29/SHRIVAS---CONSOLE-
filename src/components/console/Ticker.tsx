@@ -18,7 +18,8 @@ export default function Ticker() {
   return (
     <div
       aria-label="Breaking news ticker"
-      className="fixed inset-x-0 bottom-12 z-30 overflow-hidden border-y border-alert/60 bg-alert"
+      className="fixed left-[var(--bezel)] right-[var(--bezel)] bottom-[calc(3rem+var(--bezel))] z-30
+        overflow-hidden border-y border-alert/60 bg-alert"
     >
       <div
         className="flex w-max hover:[animation-play-state:paused] motion-safe:animate-[ticker-scroll_38s_linear_infinite]"
