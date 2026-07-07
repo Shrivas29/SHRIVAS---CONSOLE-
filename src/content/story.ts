@@ -7,31 +7,35 @@ export type StoryBeat = {
 export const storyBeats: StoryBeat[] = [
   {
     speaker: "SYSTEM",
-    line: "MEMORY CARD DETECTED. LOADING PLAYER FILE…",
+    line: "MEMORY CARD FOUND. LOADING PLAYER FILE…",
   },
   {
     speaker: "SHRIVAS",
-    line: "Coimbatore, South India. Filter coffee strong enough to reboot a corpse, badminton before school, a laptop that ran too hot every single day.",
+    line: "Coimbatore, South India. That's the player. Filter coffee, badminton before school, a laptop that always ran too hot.",
     img: {
-      src: "/images/portrait-ento.webp",
-      alt: "Shrivas, teal-toned portrait with ENTO lettering across his glasses",
+      src: "/images/story-baby.webp",
+      alt: "Shrivas as a toddler, grinning in a hooded jacket",
     },
   },
   {
     speaker: "SHRIVAS",
-    line: "I couldn't pick between design and code. So I refused to. I learned both until the line between them stopped existing.",
+    line: "Someone taught me to build one website. Then something caught fire on the inside, and it never went out.",
   },
   {
     speaker: "SHRIVAS",
-    line: "Now every site I make is one motion — strategy, design, code, ship. No handoffs. Nothing lost between the sketch and the screen.",
+    line: "Design or code? I refused to pick a side. I learned both until you couldn't find the seam between them.",
+    img: {
+      src: "/images/story-fork.webp",
+      alt: "Three mirror reflections of Shrivas, each in a different outfit",
+    },
   },
   {
     speaker: "SYSTEM",
-    line: "NEW SAVE CREATED — ENTØ STUDIOS. EST. JUNE 2026.",
+    line: "NEW SAVE CREATED — ENTØ STUDIOS. FOUNDED AT 17.",
   },
   {
     speaker: "SHRIVAS",
-    line: "At 17 I started ENTØ, a creative studio with the bar set stupidly high. It shipped its first client site in month one.",
+    line: "A studio with the bar set stupidly high. The first client site shipped in month one.",
     img: {
       src: "/images/poster-ento.webp",
       alt: "ENTØ poster: chrome hand reaching toward a warped racket, 'AI does it better' in warped type",
@@ -39,22 +43,34 @@ export const storyBeats: StoryBeat[] = [
   },
   {
     speaker: "SHRIVAS",
-    line: "That first client? My mom — a digital marketing influencer who deserved a website that proves it. Family discount: zero. Standards: maximum.",
+    line: "Best Outgoing Student of the Year. I walked up, took the mic, and meant every word of it.",
+    img: {
+      src: "/images/story-award.webp",
+      alt: "Shrivas on stage holding a microphone, accepting Best Outgoing Student of the Year",
+    },
   },
   {
     speaker: "SYSTEM",
-    line: "QUEST ACCEPTED — UNDERGRAD: THE NETHERLANDS. DEPARTURE: SOON.",
+    line: "QUEST ACCEPTED — TECHNICAL COMPUTER SCIENCE, UNIVERSITY OF TWENTE.",
   },
   {
     speaker: "SHRIVAS",
-    line: "New country, new map, same player. The Itachi figurine travels in the carry-on. The standards travel everywhere.",
+    line: "New country, new map, same player. The Netherlands is just the next level.",
+    img: {
+      src: "/images/story-next.webp",
+      alt: "Motion-blurred self-portrait of Shrivas, caught mid-movement",
+    },
   },
   {
     speaker: "SHRIVAS",
-    line: "The rule stays the rule: if it isn't worth screenshotting, it doesn't ship. You're inside the proof right now.",
+    line: "The plan is not modest: go down in history as the biggest tech giant there is. Screenshot this one.",
+    img: {
+      src: "/images/portrait-ento.webp",
+      alt: "Shrivas, teal-toned portrait with ENTO lettering across his glasses",
+    },
   },
   {
     speaker: "SYSTEM",
-    line: "END OF PLAYER FILE. REPLAY — or go open the ENTØ cartridge.",
+    line: "END OF PLAYER FILE. NOW GO OPEN THE ENTØ CARTRIDGE.",
   },
 ];
