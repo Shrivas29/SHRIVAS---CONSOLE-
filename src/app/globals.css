@@ -58,14 +58,6 @@
   --font-zen: "Zen Kaku Gothic New", "Hiragino Kaku Gothic ProN", sans-serif;
 
   --ease-mech: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* the beige computer + clay desk it sits on */
-  --clay: #b56a5a;
-  --clay-lo: #a85f50;
-  --beige: #ded6c4;
-  --beige-hi: #ece6d7;
-  --beige-lo: #c3baa4;
-  --beige-deep: #ab9f86;
 }
 
 @theme inline {
@@ -83,121 +75,10 @@
 }
 
 body {
-  background: var(--clay);
+  background: var(--crt-black);
   color: var(--ink);
   font-family: var(--font-zen);
-  overflow: hidden;
-}
-
-/* ── The beige computer on a clay desk ─────────────────────────────
-   The whole SHRIVAS PS site plays inside this CRT. The desk fills the
-   viewport; the monitor is centred with a warm clay gutter; the screen
-   holds the app and contains its fixed overlays via `transform`. */
-.desk {
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(120% 80% at 50% 8%, #c07d6c 0%, var(--clay) 42%, var(--clay-lo) 100%);
-}
-
-.monitor {
-  position: relative;
-  width: min(94vw, 168vh);
-  height: min(94dvh, 1180px);
-  display: flex;
-  flex-direction: column;
-  padding: clamp(12px, 2.4vw, 40px);
-  padding-bottom: 0;
-  border-radius: clamp(18px, 2.4vw, 42px);
-  background: linear-gradient(
-    166deg,
-    var(--beige-hi) 0%,
-    var(--beige) 30%,
-    var(--beige-lo) 82%,
-    var(--beige-deep) 100%
-  );
-  box-shadow:
-    /* molded highlight up top, shade down low */
-    inset 0 3px 2px rgba(255, 255, 255, 0.55),
-    inset 0 -5px 8px rgba(0, 0, 0, 0.18),
-    /* it sits on a desk */
-    0 30px 60px -20px rgba(60, 20, 12, 0.55),
-    0 8px 20px -8px rgba(60, 20, 12, 0.4);
-}
-
-/* the CRT glass: rounded pincushion corners, recessed into the plastic.
-   `transform` makes it the containing block for the app's fixed overlays. */
-.monitor-screen {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  border-radius: clamp(14px, 1.8vw, 30px);
-  background: var(--crt-black);
-  transform: translateZ(0);
-  box-shadow:
-    /* deep inner bezel groove around the glass */
-    0 0 0 3px var(--beige-deep),
-    0 0 0 5px rgba(0, 0, 0, 0.35),
-    inset 0 0 0 2px rgba(0, 0, 0, 0.7),
-    inset 0 0 40px 10px rgba(0, 0, 0, 0.5);
-}
-
-/* the chin below the screen: vent grooves, brand, power LED */
-.monitor-chin {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  height: clamp(26px, 4vw, 62px);
-  padding: 0 clamp(10px, 2vw, 28px);
-}
-
-.monitor-vents {
-  flex: 1;
-  height: 42%;
-  margin-left: 1rem;
-  border-radius: 3px;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.16) 0 1px,
-    transparent 1px 4px
-  );
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
-}
-
-.monitor-brand {
-  font-size: clamp(9px, 1.2vw, 16px);
-  letter-spacing: 0.42em;
-  color: #8a7f66;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  white-space: nowrap;
-}
-
-.monitor-led {
-  width: clamp(6px, 0.8vw, 9px);
-  aspect-ratio: 1;
-  border-radius: 999px;
-  background: #e0503c;
-  box-shadow:
-    0 0 7px 1px rgba(224, 80, 60, 0.9),
-    inset 0 1px 1px rgba(255, 255, 255, 0.5);
-}
-
-@media (max-width: 640px) {
-  /* on phones the device nearly fills the screen; drop the chin for room */
-  .monitor {
-    width: 96vw;
-    height: 96dvh;
-    padding: clamp(8px, 3vw, 16px);
-    padding-bottom: clamp(8px, 3vw, 16px);
-  }
-  .monitor-chin {
-    display: none;
-  }
+  overflow-x: hidden;
 }
 
 /* retro pixel cursors — phosphor arrow at rest, memo-yellow over anything

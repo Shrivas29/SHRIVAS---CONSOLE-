@@ -118,7 +118,7 @@ export default function BootScreen() {
 
   if (step === "name") {
     return (
-      <main className="grid h-full place-items-center bg-crt-black p-4">
+      <main className="grid min-h-dvh place-items-center bg-crt-black p-4">
         <div
           className="w-full max-w-xl border-2 border-phosphor bg-black p-8 sm:p-12"
           style={{ boxShadow: "0 0 42px oklch(0.82 0.14 200 / 0.14)" }}
@@ -183,7 +183,7 @@ export default function BootScreen() {
   }
 
   return (
-    <main className="relative grid h-full place-items-center overflow-hidden bg-crt-black p-4">
+    <main className="relative grid min-h-dvh place-items-center overflow-hidden bg-crt-black p-4">
       {/* phosphor haze behind the panel — tube glow, not decoration */}
       <div
         aria-hidden="true"

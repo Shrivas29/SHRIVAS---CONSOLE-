@@ -8,7 +8,6 @@ import { useOS } from "@/store/os";
 import { useAchievements } from "@/store/achievements";
 import { prefetchAssets } from "@/lib/prefetchAssets";
 import AchievementToast from "./AchievementToast";
-import Monitor from "./Monitor";
 
 export default function Console() {
   const phase = useOS((s) => s.phase);
@@ -23,10 +22,10 @@ export default function Console() {
   }, []);
 
   return (
-    <Monitor>
+    <>
       {phase === "boot" ? <BootScreen /> : <Desktop />}
       <AchievementToast />
       {crt && <CrtOverlay />}
-    </Monitor>
+    </>
   );
 }
